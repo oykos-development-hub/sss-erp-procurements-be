@@ -60,12 +60,12 @@ jobs:
               fi
               export PATH="/usr/bin/go/bin:$PATH"
               go mod tidy
-              go build -o procurementApp
-              if [ ! -f ./procurementApp ]; then
-                echo "Go build "procurementApp" file does not exist!"
+              go build -o procurementsApp
+              if [ ! -f ./procurementsApp ]; then
+                echo "Go build "procurementsApp" file does not exist!"
                 exit 1
               fi
-              rm -rf ../../procurementApp
-              cp ./procurementApp ../../
+              rm -rf ../../procurementsApp
+              cp ./procurementsApp ../../
               cp ./.env-example ../../.env
-              sudo systemctl restart sss-erp-procurement-be.service
+              sudo systemctl restart sss-erp-procurements-be.service
