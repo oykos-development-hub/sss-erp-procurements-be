@@ -11,12 +11,12 @@ type GetArticleListInput struct {
 }
 
 type ArticleDTO struct {
-	BudgetID      int    `json:"budget_indent_id"`
-	ItemID        int    `json:"public_procurement_id"`
-	Title         string `json:"title" validate:"required"`
-	Description   string `json:"description"`
-	NetPrice      string `json:"net_price" validate:"required"`
-	VATPercentage string `json:"vat_percentage" validate:"required"`
+	BudgetID      int     `json:"budget_indent_id"`
+	ItemID        int     `json:"public_procurement_id"`
+	Title         string  `json:"title" validate:"required"`
+	Description   string  `json:"description"`
+	NetPrice      float32 `json:"net_price" validate:"required"`
+	VATPercentage string  `json:"vat_percentage" validate:"required"`
 }
 
 type ArticleResponseDTO struct {
@@ -25,7 +25,7 @@ type ArticleResponseDTO struct {
 	ItemID        int       `json:"public_procurement_id"`
 	Title         string    `json:"title"`
 	Description   string    `json:"description"`
-	NetPrice      string    `json:"net_price"`
+	NetPrice      float32   `json:"net_price"`
 	VATPercentage string    `json:"vat_percentage"`
 	CreatedAt     time.Time `json:"created_at"`
 	UpdatedAt     time.Time `json:"updated_at"`

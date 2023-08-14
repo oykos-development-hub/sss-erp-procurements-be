@@ -11,11 +11,11 @@ type GetContractArticlesInputDTO struct {
 }
 
 type ContractArticleDTO struct {
-	ArticleID  int     `json:"public_procurement_article_id" validate:"required"`
-	ContractID int     `json:"public_procurement_contract_id" validate:"required"`
-	Amount     int     `json:"amount" validate:"required"`
-	NetValue   *string `json:"net_value"`
-	GrossValue *string `json:"gross_value"`
+	ArticleID  int      `json:"public_procurement_article_id" validate:"required"`
+	ContractID int      `json:"public_procurement_contract_id" validate:"required"`
+	Amount     int      `json:"amount" validate:"required"`
+	NetValue   *float32 `json:"net_value"`
+	GrossValue *float32 `json:"gross_value"`
 }
 
 type ContractArticleResponseDTO struct {
@@ -23,8 +23,8 @@ type ContractArticleResponseDTO struct {
 	ArticleID  int       `json:"public_procurement_article_id"`
 	ContractID int       `json:"public_procurement_contract_id"`
 	Amount     int       `json:"amount"`
-	NetValue   *string   `json:"net_value"`
-	GrossValue *string   `json:"gross_value"`
+	NetValue   *float32  `json:"net_value"`
+	GrossValue *float32  `json:"gross_value"`
 	CreatedAt  time.Time `json:"created_at"`
 	UpdatedAt  time.Time `json:"updated_at"`
 }

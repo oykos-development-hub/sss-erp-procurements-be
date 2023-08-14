@@ -19,8 +19,8 @@ type ContractDTO struct {
 	SerialNumber        string     `json:"serial_number"  validate:"required"`
 	DateOfSigning       time.Time  `json:"date_of_signing"  validate:"required"`
 	DateOfExpiry        *time.Time `json:"date_of_expiry"`
-	NetValue            string     `json:"net_value"  validate:"required"`
-	GrossValue          string     `json:"gross_value"  validate:"required"`
+	NetValue            float32    `json:"net_value"  validate:"required"`
+	GrossValue          float32    `json:"gross_value"  validate:"required"`
 	FileID              *int       `json:"file_id"`
 }
 
@@ -31,8 +31,8 @@ type ContractResponseDTO struct {
 	SerialNumber        string     `json:"serial_number"`
 	DateOfSigning       time.Time  `json:"date_of_signing"`
 	DateOfExpiry        *time.Time `json:"date_of_expiry"`
-	NetValue            string     `json:"net_value"`
-	GrossValue          string     `json:"gross_value"`
+	NetValue            float32    `json:"net_value"`
+	GrossValue          float32    `json:"gross_value"`
 	FileID              *int       `json:"file_id"`
 	CreatedAt           time.Time  `json:"created_at"`
 	UpdatedAt           time.Time  `json:"updated_at"`

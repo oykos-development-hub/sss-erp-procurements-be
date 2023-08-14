@@ -13,7 +13,7 @@ type Article struct {
 	ItemID        int       `db:"item_id"`
 	Title         string    `db:"title"`
 	Description   string    `db:"description"`
-	NetPrice      string    `db:"net_price"`
+	NetPrice      float32   `db:"net_price"`
 	VATPercentage string    `db:"vat_percentage"`
 	CreatedAt     time.Time `db:"created_at,omitempty"`
 	UpdatedAt     time.Time `db:"updated_at"`
