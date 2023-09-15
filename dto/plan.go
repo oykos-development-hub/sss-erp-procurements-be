@@ -63,7 +63,7 @@ func ToPlanResponseDTO(data data.Plan) PlanResponseDTO {
 		DateOfPublishing: data.DateOfPublishing,
 		DateOfClosing:    data.DateOfClosing,
 		PreBudgetID:      data.PreBudgetID,
-		IsPreBudget:      data.PreBudgetID != nil,
+		IsPreBudget:      data.PreBudgetID == nil,
 		FileID:           data.FileID,
 		CreatedAt:        data.CreatedAt,
 		UpdatedAt:        data.UpdatedAt,
