@@ -83,9 +83,9 @@ func (h *PlanServiceImpl) GetPlanList(input dto.GetPlansInputDTO) ([]dto.PlanRes
 	cond := up.Cond{}
 	if input.IsPreBudget != nil {
 		if *input.IsPreBudget {
-			cond["pre_budget_id"] = up.IsNotNull()
-		} else {
 			cond["pre_budget_id"] = up.IsNull()
+		} else {
+			cond["pre_budget_id"] = up.IsNotNull()
 		}
 	}
 	if input.Year != nil {

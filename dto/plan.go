@@ -17,7 +17,7 @@ type GetPlansInputDTO struct {
 type PlanDTO struct {
 	Year             string     `json:"year" validate:"required"`
 	Title            string     `json:"title" validate:"required"`
-	Active           *bool      `json:"active" validate:"required"`
+	Active           *bool      `json:"active"`
 	SerialNumber     *string    `json:"serial_number"`
 	DateOfPublishing *time.Time `json:"date_of_publishing"`
 	DateOfClosing    *time.Time `json:"date_of_closing"`
