@@ -12,12 +12,12 @@ type GetOrganizationUnitArticleListInputDTO struct {
 }
 
 type OrganizationUnitArticleDTO struct {
-	ArticleID           int    `json:"public_procurement_article_id" validate:"required"`
-	OrganizationUnitID  int    `json:"organization_unit_id" validate:"required"`
-	Amount              int    `json:"amount" validate:"required"`
-	Status              string `json:"status"`
-	IsRejected          bool   `json:"is_rejected"`
-	RejectedDescription string `json:"rejected_description"`
+	ArticleID           int     `json:"public_procurement_article_id" validate:"required"`
+	OrganizationUnitID  int     `json:"organization_unit_id" validate:"required"`
+	Amount              int     `json:"amount" validate:"required"`
+	Status              string  `json:"status"`
+	IsRejected          bool    `json:"is_rejected"`
+	RejectedDescription *string `json:"rejected_description"`
 }
 
 type OrganizationUnitArticleResponseDTO struct {
@@ -27,7 +27,7 @@ type OrganizationUnitArticleResponseDTO struct {
 	Amount              int       `json:"amount"`
 	Status              string    `json:"status"`
 	IsRejected          bool      `json:"is_rejected"`
-	RejectedDescription string    `json:"rejected_description"`
+	RejectedDescription *string   `json:"rejected_description"`
 	CreatedAt           time.Time `json:"created_at"`
 	UpdatedAt           time.Time `json:"updated_at"`
 }
