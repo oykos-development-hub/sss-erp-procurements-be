@@ -30,26 +30,44 @@ type ContractArticleResponseDTO struct {
 }
 
 func (dto ContractArticleDTO) ToContractArticle() *data.ContractArticle {
-	return &data.ContractArticle{
+	data := &data.ContractArticle{
 		ArticleID:  dto.ArticleID,
 		ContractID: dto.ContractID,
 		Amount:     dto.Amount,
-		NetValue:   dto.NetValue,
-		GrossValue: dto.GrossValue,
 	}
+
+	if dto.NetValue != nil {
+		net := int(*dto.NetValue * 100) // converting float to cents
+		data.NetValue = &net
+	}
+	if dto.GrossValue != nil {
+		gross := int(*dto.GrossValue * 100) // converting float to cents
+		data.GrossValue = &gross
+	}
+
+	return data
 }
 
 func ToContractArticleResponseDTO(data data.ContractArticle) ContractArticleResponseDTO {
-	return ContractArticleResponseDTO{
+	res := ContractArticleResponseDTO{
 		ID:         data.ID,
 		ArticleID:  data.ArticleID,
 		ContractID: data.ContractID,
 		Amount:     data.Amount,
-		NetValue:   data.NetValue,
-		GrossValue: data.GrossValue,
 		CreatedAt:  data.CreatedAt,
 		UpdatedAt:  data.UpdatedAt,
 	}
+
+	if data.NetValue != nil {
+		net := float32(*data.NetValue) / 100.0 // converting cents back to float
+		res.NetValue = &net
+	}
+	if data.GrossValue != nil {
+		gross := float32(*data.GrossValue) / 100.0 // converting cents back to float
+		res.GrossValue = &gross
+	}
+
+	return res
 }
 
 func ToContractArticleListResponseDTO(contractArticles []*data.ContractArticle) []ContractArticleResponseDTO {

@@ -12,8 +12,8 @@ type ContractArticle struct {
 	ArticleID  int       `db:"article_id"`
 	ContractID int       `db:"contract_id"`
 	Amount     int       `db:"amount"`
-	NetValue   *float32  `db:"net_value"`
-	GrossValue *float32  `db:"gross_value"`
+	NetValue   *int      `db:"net_value"`
+	GrossValue *int      `db:"gross_value"`
 	CreatedAt  time.Time `db:"created_at,omitempty"`
 	UpdatedAt  time.Time `db:"updated_at"`
 }

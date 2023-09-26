@@ -45,8 +45,8 @@ func (dto ContractDTO) ToContract() *data.Contract {
 		SerialNumber:        dto.SerialNumber,
 		DateOfSigning:       dto.DateOfSigning,
 		DateOfExpiry:        dto.DateOfExpiry,
-		NetValue:            dto.NetValue,
-		GrossValue:          dto.GrossValue,
+		NetValue:            int(dto.NetValue * 100),
+		GrossValue:          int(dto.GrossValue * 100),
 		FileID:              dto.FileID,
 	}
 }
@@ -59,8 +59,8 @@ func ToContractResponseDTO(data data.Contract) ContractResponseDTO {
 		SerialNumber:        data.SerialNumber,
 		DateOfSigning:       data.DateOfSigning,
 		DateOfExpiry:        data.DateOfExpiry,
-		NetValue:            data.NetValue,
-		GrossValue:          data.GrossValue,
+		NetValue:            float32(data.NetValue) / 100.0,
+		GrossValue:          float32(data.GrossValue) / 100.0,
 		FileID:              data.FileID,
 		CreatedAt:           data.CreatedAt,
 		UpdatedAt:           data.UpdatedAt,
