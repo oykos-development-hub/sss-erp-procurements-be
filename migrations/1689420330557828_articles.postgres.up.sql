@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS articles (
     item_id INTEGER NOT NULL,
     title TEXT NOT NULL,
     description TEXT,
-    net_price TEXT NOT NULL,
+    net_price integer NOT NULL,
     vat_percentage TEXT NOT NULL,
     created_at TIMESTAMP,
     updated_at TIMESTAMP,

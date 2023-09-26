@@ -37,7 +37,7 @@ func (dto ArticleDTO) ToArticle() *data.Article {
 		BudgetID:      dto.BudgetID,
 		ItemID:        dto.ItemID,
 		Description:   dto.Description,
-		NetPrice:      dto.NetPrice,
+		NetPrice:      int(dto.NetPrice * 100),
 		VATPercentage: dto.VATPercentage,
 	}
 }
@@ -49,7 +49,7 @@ func ToArticleResponseDTO(data data.Article) ArticleResponseDTO {
 		ItemID:        data.ItemID,
 		Title:         data.Title,
 		Description:   data.Description,
-		NetPrice:      data.NetPrice,
+		NetPrice:      float32(data.NetPrice) / 100.0,
 		VATPercentage: data.VATPercentage,
 		CreatedAt:     data.CreatedAt,
 		UpdatedAt:     data.UpdatedAt,
