@@ -17,7 +17,7 @@ type ArticleDTO struct {
 	Description   string  `json:"description"`
 	NetPrice      float32 `json:"net_price" validate:"required"`
 	VATPercentage string  `json:"vat_percentage" validate:"required"`
-	Manufacturer  string  `json:"manufacturer" validate:"required"`
+	Manufacturer  *string `json:"manufacturer"`
 }
 
 type ArticleResponseDTO struct {
@@ -28,7 +28,7 @@ type ArticleResponseDTO struct {
 	Description   string    `json:"description"`
 	NetPrice      float32   `json:"net_price"`
 	VATPercentage string    `json:"vat_percentage"`
-	Manufacturer  string    `json:"manufacturer"`
+	Manufacturer  *string   `json:"manufacturer"`
 	CreatedAt     time.Time `json:"created_at"`
 	UpdatedAt     time.Time `json:"updated_at"`
 }
