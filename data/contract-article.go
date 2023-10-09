@@ -40,7 +40,7 @@ func (t *ContractArticle) GetAll(condition *up.Cond) ([]*ContractArticle, *uint6
 		return nil, nil, err
 	}
 
-	err = res.All(&all)
+	err = res.OrderBy("created_at desc").All(&all)
 	if err != nil {
 		return nil, nil, err
 	}

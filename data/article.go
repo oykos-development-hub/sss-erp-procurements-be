@@ -37,7 +37,7 @@ func (t *Article) GetAll(condition *up.Cond) ([]*Article, error) {
 		res = collection.Find()
 	}
 
-	err := res.All(&all)
+	err := res.OrderBy("created_at desc").All(&all)
 	if err != nil {
 		return nil, err
 	}

@@ -50,7 +50,7 @@ func (t *Item) GetAll(page *int, size *int, condition *up.Cond) ([]*Item, *uint6
 		res = paginateResult(res, *page, *size)
 	}
 
-	err = res.All(&all)
+	err = res.OrderBy("created_at desc").All(&all)
 	if err != nil {
 		return nil, nil, err
 	}

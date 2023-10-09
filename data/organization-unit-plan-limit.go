@@ -33,7 +33,7 @@ func (t *OrganizationUnitPlanLimit) GetAll(condition *up.Cond) ([]*OrganizationU
 		res = collection.Find()
 	}
 
-	err := res.All(&all)
+	err := res.OrderBy("created_at desc").All(&all)
 	if err != nil {
 		return nil, err
 	}

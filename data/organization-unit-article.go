@@ -36,7 +36,7 @@ func (t *OrganizationUnitArticle) GetAll(condition *up.Cond) ([]*OrganizationUni
 		res = collection.Find()
 	}
 
-	err := res.All(&all)
+	err := res.OrderBy("created_at desc").All(&all)
 	if err != nil {
 		return nil, err
 	}
