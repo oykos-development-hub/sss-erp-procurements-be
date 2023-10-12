@@ -7,5 +7,6 @@ CREATE TABLE IF NOT EXISTS organization_unit_articles (
     is_rejected boolean,
     rejected_description text,
     created_at TIMESTAMP,
-    updated_at TIMESTAMP
+    updated_at TIMESTAMP,
+    FOREIGN KEY (article_id) REFERENCES articles (id) ON UPDATE CASCADE ON DELETE CASCADE
 );

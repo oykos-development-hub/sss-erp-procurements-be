@@ -42,6 +42,7 @@ func (h *organizationunitplanlimitHandlerImpl) CreateOrganizationUnitPlanLimit(w
 
 	res, err := h.service.CreateOrganizationUnitPlanLimit(input)
 	if err != nil {
+		h.App.ErrorLog.Printf("Error organization unit plan limit: %v", err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
 	}
@@ -67,6 +68,7 @@ func (h *organizationunitplanlimitHandlerImpl) UpdateOrganizationUnitPlanLimit(w
 
 	res, err := h.service.UpdateOrganizationUnitPlanLimit(id, input)
 	if err != nil {
+		h.App.ErrorLog.Printf("Error updating organization unit plan limit with ID %d: %v", id, err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
 	}
@@ -79,6 +81,7 @@ func (h *organizationunitplanlimitHandlerImpl) DeleteOrganizationUnitPlanLimit(w
 
 	err := h.service.DeleteOrganizationUnitPlanLimit(id)
 	if err != nil {
+		h.App.ErrorLog.Printf("Error deleting organization unit plan limit with ID %d: %v", id, err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
 	}
@@ -91,6 +94,7 @@ func (h *organizationunitplanlimitHandlerImpl) GetOrganizationUnitPlanLimitById(
 
 	res, err := h.service.GetOrganizationUnitPlanLimit(id)
 	if err != nil {
+		h.App.ErrorLog.Printf("Error fetching organization unit plan limit with ID %d: %v", id, err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
 	}
@@ -108,6 +112,7 @@ func (h *organizationunitplanlimitHandlerImpl) GetOrganizationUnitPlanLimitList(
 
 	res, err := h.service.GetOrganizationUnitPlanLimitList(input)
 	if err != nil {
+		h.App.ErrorLog.Printf("Error fetching organization unit plan limit list: %v", err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
 	}

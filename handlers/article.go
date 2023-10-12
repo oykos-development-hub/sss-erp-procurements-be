@@ -42,6 +42,7 @@ func (h *articleHandlerImpl) CreateArticle(w http.ResponseWriter, r *http.Reques
 
 	res, err := h.service.CreateArticle(input)
 	if err != nil {
+		h.App.ErrorLog.Printf("Error creating article: %v", err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
 	}
@@ -67,6 +68,7 @@ func (h *articleHandlerImpl) UpdateArticle(w http.ResponseWriter, r *http.Reques
 
 	res, err := h.service.UpdateArticle(id, input)
 	if err != nil {
+		h.App.ErrorLog.Printf("Error updating article with ID %d: %v", id, err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
 	}
@@ -79,6 +81,7 @@ func (h *articleHandlerImpl) DeleteArticle(w http.ResponseWriter, r *http.Reques
 
 	err := h.service.DeleteArticle(id)
 	if err != nil {
+		h.App.ErrorLog.Printf("Error deleting article with ID %d: %v", id, err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
 	}
@@ -91,6 +94,7 @@ func (h *articleHandlerImpl) GetArticleById(w http.ResponseWriter, r *http.Reque
 
 	res, err := h.service.GetArticle(id)
 	if err != nil {
+		h.App.ErrorLog.Printf("Error fetching article with ID %d: %v", id, err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
 	}
@@ -108,6 +112,7 @@ func (h *articleHandlerImpl) GetArticleList(w http.ResponseWriter, r *http.Reque
 
 	res, err := h.service.GetArticleList(&input)
 	if err != nil {
+		h.App.ErrorLog.Printf("Error fetching article list: %v", err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
 	}

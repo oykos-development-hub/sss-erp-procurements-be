@@ -42,6 +42,7 @@ func (h *organizationunitarticleHandlerImpl) CreateOrganizationUnitArticle(w htt
 
 	res, err := h.service.CreateOrganizationUnitArticle(input)
 	if err != nil {
+		h.App.ErrorLog.Printf("Error creating organization unit article: %v", err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
 	}
@@ -67,6 +68,7 @@ func (h *organizationunitarticleHandlerImpl) UpdateOrganizationUnitArticle(w htt
 
 	res, err := h.service.UpdateOrganizationUnitArticle(id, input)
 	if err != nil {
+		h.App.ErrorLog.Printf("Error updating organization unit article with ID %d: %v", id, err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
 	}
@@ -79,6 +81,7 @@ func (h *organizationunitarticleHandlerImpl) DeleteOrganizationUnitArticle(w htt
 
 	err := h.service.DeleteOrganizationUnitArticle(id)
 	if err != nil {
+		h.App.ErrorLog.Printf("Error deleting organization unit article with ID %d: %v", id, err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
 	}
@@ -91,6 +94,7 @@ func (h *organizationunitarticleHandlerImpl) GetOrganizationUnitArticleById(w ht
 
 	res, err := h.service.GetOrganizationUnitArticle(id)
 	if err != nil {
+		h.App.ErrorLog.Printf("Error fetching organization unit article with ID %d: %v", id, err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
 	}
@@ -114,6 +118,7 @@ func (h *organizationunitarticleHandlerImpl) GetOrganizationUnitArticleList(w ht
 
 	res, err := h.service.GetOrganizationUnitArticleList(input)
 	if err != nil {
+		h.App.ErrorLog.Printf("Error fetching organization unit article list: %v", err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
 	}

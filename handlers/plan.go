@@ -42,6 +42,7 @@ func (h *planHandlerImpl) CreatePlan(w http.ResponseWriter, r *http.Request) {
 
 	res, err := h.service.CreatePlan(input)
 	if err != nil {
+		h.App.ErrorLog.Printf("Error creating plan: %v", err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
 	}
@@ -67,6 +68,7 @@ func (h *planHandlerImpl) UpdatePlan(w http.ResponseWriter, r *http.Request) {
 
 	res, err := h.service.UpdatePlan(id, input)
 	if err != nil {
+		h.App.ErrorLog.Printf("Error updating plan: %v", err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
 	}
@@ -79,6 +81,7 @@ func (h *planHandlerImpl) DeletePlan(w http.ResponseWriter, r *http.Request) {
 
 	err := h.service.DeletePlan(id)
 	if err != nil {
+		h.App.ErrorLog.Printf("Error deleting plan: %v", err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
 	}
@@ -91,6 +94,7 @@ func (h *planHandlerImpl) GetPlanById(w http.ResponseWriter, r *http.Request) {
 
 	res, err := h.service.GetPlan(id)
 	if err != nil {
+		h.App.ErrorLog.Printf("Error getting plan: %v", err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
 	}
@@ -114,6 +118,7 @@ func (h *planHandlerImpl) GetPlanList(w http.ResponseWriter, r *http.Request) {
 
 	res, total, err := h.service.GetPlanList(input)
 	if err != nil {
+		h.App.ErrorLog.Printf("Error getting plans: %v", err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
 	}

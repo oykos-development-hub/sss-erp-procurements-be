@@ -42,6 +42,7 @@ func (h *itemHandlerImpl) CreateItem(w http.ResponseWriter, r *http.Request) {
 
 	res, err := h.service.CreateItem(input)
 	if err != nil {
+		h.App.ErrorLog.Printf("Error creating item: %v", err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
 	}
@@ -67,6 +68,7 @@ func (h *itemHandlerImpl) UpdateItem(w http.ResponseWriter, r *http.Request) {
 
 	res, err := h.service.UpdateItem(id, input)
 	if err != nil {
+		h.App.ErrorLog.Printf("Error updating item with ID %d: %v", id, err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
 	}
@@ -79,6 +81,7 @@ func (h *itemHandlerImpl) DeleteItem(w http.ResponseWriter, r *http.Request) {
 
 	err := h.service.DeleteItem(id)
 	if err != nil {
+		h.App.ErrorLog.Printf("Error deleting item with ID %d: %v", id, err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
 	}
@@ -91,6 +94,7 @@ func (h *itemHandlerImpl) GetItemById(w http.ResponseWriter, r *http.Request) {
 
 	res, err := h.service.GetItem(id)
 	if err != nil {
+		h.App.ErrorLog.Printf("Error fetching item with ID %d: %v", id, err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
 	}
@@ -114,6 +118,7 @@ func (h *itemHandlerImpl) GetItemList(w http.ResponseWriter, r *http.Request) {
 
 	res, total, err := h.service.GetItemList(input)
 	if err != nil {
+		h.App.ErrorLog.Printf("Error fetching item list: %v", err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
 	}

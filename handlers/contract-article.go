@@ -42,6 +42,7 @@ func (h *contractArticleHandlerImpl) CreateContractArticle(w http.ResponseWriter
 
 	res, err := h.service.CreateContractArticle(input)
 	if err != nil {
+		h.App.ErrorLog.Printf("Error creating contract article: %v", err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
 	}
@@ -67,6 +68,7 @@ func (h *contractArticleHandlerImpl) UpdateContractArticle(w http.ResponseWriter
 
 	res, err := h.service.UpdateContractArticle(id, input)
 	if err != nil {
+		h.App.ErrorLog.Printf("Error updating contract article with ID %d: %v", id, err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
 	}
@@ -79,6 +81,7 @@ func (h *contractArticleHandlerImpl) DeleteContractArticle(w http.ResponseWriter
 
 	err := h.service.DeleteContractArticle(id)
 	if err != nil {
+		h.App.ErrorLog.Printf("Error deleting contract article with ID %d: %v", id, err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
 	}
@@ -91,6 +94,7 @@ func (h *contractArticleHandlerImpl) GetContractArticleById(w http.ResponseWrite
 
 	res, err := h.service.GetContractArticle(id)
 	if err != nil {
+		h.App.ErrorLog.Printf("Error fetching contract article with ID %d: %v", id, err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
 	}
@@ -114,6 +118,7 @@ func (h *contractArticleHandlerImpl) GetContractArticleList(w http.ResponseWrite
 
 	res, total, err := h.service.GetContractArticleList(&input)
 	if err != nil {
+		h.App.ErrorLog.Printf("Error fetching contract article list: %v", err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
 	}

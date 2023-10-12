@@ -42,6 +42,7 @@ func (h *contractHandlerImpl) CreateContract(w http.ResponseWriter, r *http.Requ
 
 	res, err := h.service.CreateContract(input)
 	if err != nil {
+		h.App.ErrorLog.Printf("Error creating contract: %v", err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
 	}
@@ -67,6 +68,7 @@ func (h *contractHandlerImpl) UpdateContract(w http.ResponseWriter, r *http.Requ
 
 	res, err := h.service.UpdateContract(id, input)
 	if err != nil {
+		h.App.ErrorLog.Printf("Error updating contract with ID %d: %v", id, err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
 	}
@@ -79,6 +81,7 @@ func (h *contractHandlerImpl) DeleteContract(w http.ResponseWriter, r *http.Requ
 
 	err := h.service.DeleteContract(id)
 	if err != nil {
+		h.App.ErrorLog.Printf("Error deleting contract with ID %d: %v", id, err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
 	}
@@ -91,6 +94,7 @@ func (h *contractHandlerImpl) GetContractById(w http.ResponseWriter, r *http.Req
 
 	res, err := h.service.GetContract(id)
 	if err != nil {
+		h.App.ErrorLog.Printf("Error fetching contract with ID %d: %v", id, err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
 	}
@@ -114,6 +118,7 @@ func (h *contractHandlerImpl) GetContractList(w http.ResponseWriter, r *http.Req
 
 	res, total, err := h.service.GetContractList(input)
 	if err != nil {
+		h.App.ErrorLog.Printf("Error fetching contract list: %v", err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
 	}
