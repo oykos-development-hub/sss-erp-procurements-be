@@ -9,7 +9,6 @@ import (
 // Article struct
 type Article struct {
 	ID            int       `db:"id,omitempty"`
-	BudgetID      int       `db:"budget_indent_id"`
 	ItemID        int       `db:"item_id"`
 	Title         string    `db:"title"`
 	Description   string    `db:"description"`

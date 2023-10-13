@@ -11,7 +11,6 @@ type GetArticleListInput struct {
 }
 
 type ArticleDTO struct {
-	BudgetID      int     `json:"budget_indent_id"`
 	ItemID        int     `json:"public_procurement_id"`
 	Title         string  `json:"title" validate:"required"`
 	Description   string  `json:"description"`
@@ -22,7 +21,6 @@ type ArticleDTO struct {
 
 type ArticleResponseDTO struct {
 	ID            int       `json:"id"`
-	BudgetID      int       `json:"budget_indent_id"`
 	ItemID        int       `json:"public_procurement_id"`
 	Title         string    `json:"title"`
 	Description   string    `json:"description"`
@@ -36,7 +34,6 @@ type ArticleResponseDTO struct {
 func (dto ArticleDTO) ToArticle() *data.Article {
 	return &data.Article{
 		Title:         dto.Title,
-		BudgetID:      dto.BudgetID,
 		ItemID:        dto.ItemID,
 		Description:   dto.Description,
 		NetPrice:      int(dto.NetPrice * 100),
@@ -48,7 +45,6 @@ func (dto ArticleDTO) ToArticle() *data.Article {
 func ToArticleResponseDTO(data data.Article) ArticleResponseDTO {
 	return ArticleResponseDTO{
 		ID:            data.ID,
-		BudgetID:      data.BudgetID,
 		ItemID:        data.ItemID,
 		Title:         data.Title,
 		Description:   data.Description,

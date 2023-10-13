@@ -1,6 +1,5 @@
 CREATE TABLE IF NOT EXISTS articles (
     id SERIAL PRIMARY KEY,
-    budget_indent_id INTEGER NOT NULL,
     item_id INTEGER NOT NULL,
     title TEXT NOT NULL,
     description TEXT,
