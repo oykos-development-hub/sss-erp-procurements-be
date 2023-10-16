@@ -7,10 +7,10 @@ import (
 )
 
 type GetPlansInputDTO struct {
-	Page           *int    `json:"page" validate:"omitempty"`
-	Size           *int    `json:"size" validate:"omitempty"`
-	IsPreBudget    *bool   `json:"is_pre_budget" validate:"omitempty"`
-	Year           *string `json:"year" validate:"omitempty"`
+	Page           *int    `json:"page"`
+	Size           *int    `json:"size"`
+	IsPreBudget    *bool   `json:"is_pre_budget"`
+	Year           *string `json:"year"`
 	TargetBudgetID *int    `json:"target_budget_id"`
 }
 
@@ -22,6 +22,7 @@ type PlanDTO struct {
 	DateOfPublishing *time.Time `json:"date_of_publishing"`
 	DateOfClosing    *time.Time `json:"date_of_closing"`
 	PreBudgetID      *int       `json:"pre_budget_id"`
+	IsPreBudget      bool       `json:"is_pre_budget"`
 	FileID           *int       `json:"file_id"`
 }
 
@@ -31,10 +32,10 @@ type PlanResponseDTO struct {
 	Title            string     `json:"title"`
 	Active           bool       `json:"active"`
 	SerialNumber     *string    `json:"serial_number"`
-	IsPreBudget      bool       `json:"is_pre_budget"`
 	DateOfPublishing *time.Time `json:"date_of_publishing"`
 	DateOfClosing    *time.Time `json:"date_of_closing"`
 	PreBudgetID      *int       `json:"pre_budget_id"`
+	IsPreBudget      bool       `json:"is_pre_budget"`
 	FileID           *int       `json:"file_id"`
 	CreatedAt        time.Time  `json:"created_at"`
 	UpdatedAt        time.Time  `json:"updated_at"`
@@ -49,6 +50,7 @@ func (dto PlanDTO) ToPlan() *data.Plan {
 		DateOfPublishing: dto.DateOfPublishing,
 		DateOfClosing:    dto.DateOfClosing,
 		PreBudgetID:      dto.PreBudgetID,
+		IsPreBudget:      dto.IsPreBudget,
 		FileID:           dto.FileID,
 	}
 }
@@ -63,7 +65,7 @@ func ToPlanResponseDTO(data data.Plan) PlanResponseDTO {
 		DateOfPublishing: data.DateOfPublishing,
 		DateOfClosing:    data.DateOfClosing,
 		PreBudgetID:      data.PreBudgetID,
-		IsPreBudget:      data.PreBudgetID == nil,
+		IsPreBudget:      data.IsPreBudget,
 		FileID:           data.FileID,
 		CreatedAt:        data.CreatedAt,
 		UpdatedAt:        data.UpdatedAt,

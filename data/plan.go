@@ -16,6 +16,7 @@ type Plan struct {
 	DateOfPublishing *time.Time `db:"date_of_publishing"`
 	DateOfClosing    *time.Time `db:"date_of_closing"`
 	PreBudgetID      *int       `db:"pre_budget_id"`
+	IsPreBudget      bool       `db:"is_pre_budget"`
 	FileID           *int       `db:"file_id"`
 	CreatedAt        time.Time  `db:"created_at,omitempty"`
 	UpdatedAt        time.Time  `db:"updated_at"`

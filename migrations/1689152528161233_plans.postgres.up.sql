@@ -7,6 +7,7 @@ CREATE TABLE IF NOT EXISTS plans (
     date_of_publishing DATE,
     date_of_closing DATE,
     pre_budget_id INTEGER,
+    is_pre_budget BOOLEAN NOT NULL,
     file_id INTEGER,
     created_at TIMESTAMP,
     updated_at TIMESTAMP,
