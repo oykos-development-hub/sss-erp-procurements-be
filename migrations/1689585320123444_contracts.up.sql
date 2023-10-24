@@ -7,6 +7,7 @@ CREATE TABLE IF NOT EXISTS contracts  (
     date_of_expiry DATE,
     net_value integer NOT NULL,
     gross_value integer NOT NULL,
+    vat_vale integer NOT NULL,
     created_at TIMESTAMP NOT NULL,
     updated_at TIMESTAMP,
     file_id INTEGER,

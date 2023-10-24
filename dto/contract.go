@@ -21,6 +21,7 @@ type ContractDTO struct {
 	DateOfExpiry        *time.Time `json:"date_of_expiry"`
 	NetValue            float32    `json:"net_value"`
 	GrossValue          float32    `json:"gross_value"`
+	VatValue            float32    `json:"vat_value"`
 	FileID              *int       `json:"file_id"`
 }
 
@@ -33,6 +34,7 @@ type ContractResponseDTO struct {
 	DateOfExpiry        *time.Time `json:"date_of_expiry"`
 	NetValue            float32    `json:"net_value"`
 	GrossValue          float32    `json:"gross_value"`
+	VatValue            float32    `json:"vat_value"`
 	FileID              *int       `json:"file_id"`
 	CreatedAt           time.Time  `json:"created_at"`
 	UpdatedAt           time.Time  `json:"updated_at"`
@@ -47,6 +49,7 @@ func (dto ContractDTO) ToContract() *data.Contract {
 		DateOfExpiry:        dto.DateOfExpiry,
 		NetValue:            int(dto.NetValue * 100),
 		GrossValue:          int(dto.GrossValue * 100),
+		VatValue:            int(dto.GrossValue * 100),
 		FileID:              dto.FileID,
 	}
 }
@@ -61,6 +64,7 @@ func ToContractResponseDTO(data data.Contract) ContractResponseDTO {
 		DateOfExpiry:        data.DateOfExpiry,
 		NetValue:            float32(data.NetValue) / 100.0,
 		GrossValue:          float32(data.GrossValue) / 100.0,
+		VatValue:            float32(data.VatValue) / 100.0,
 		FileID:              data.FileID,
 		CreatedAt:           data.CreatedAt,
 		UpdatedAt:           data.UpdatedAt,
