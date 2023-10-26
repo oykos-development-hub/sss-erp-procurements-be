@@ -1,7 +1,6 @@
 package dto
 
 import (
-	"fmt"
 	"time"
 
 	"gitlab.sudovi.me/erp/procurements-api/data"
@@ -49,16 +48,13 @@ func (dto ContractDTO) ToContract() *data.Contract {
 	}
 
 	if dto.GrossValue != nil {
-		fmt.Printf("Original GrossValue: %v\n", *dto.GrossValue) // Debug line
 		grossValueInt := int(*dto.GrossValue * 100)
 		grossValue = &grossValueInt
 	}
 	if dto.VatValue != nil {
-		fmt.Printf("Original VatValue: %v\n", *dto.VatValue) // Debug line
 		vatValueInt := int(*dto.VatValue * 100)
 		vatValue = &vatValueInt
 	}
-	fmt.Printf("VatValue: %v\n, Gross value: %v\n", *grossValue, *vatValue) // Debug line
 	return &data.Contract{
 		PublicProcurementID: dto.PublicProcurementID,
 		SupplierID:          dto.SupplierID,
