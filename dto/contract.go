@@ -1,6 +1,7 @@
 package dto
 
 import (
+	"fmt"
 	"time"
 
 	"gitlab.sudovi.me/erp/procurements-api/data"
@@ -19,9 +20,9 @@ type ContractDTO struct {
 	SerialNumber        string     `json:"serial_number"  validate:"required"`
 	DateOfSigning       time.Time  `json:"date_of_signing"  validate:"required"`
 	DateOfExpiry        *time.Time `json:"date_of_expiry"`
-	NetValue            float32    `json:"net_value"`
-	GrossValue          float32    `json:"gross_value"`
-	VatValue            float32    `json:"vat_value"`
+	NetValue            *float32   `json:"net_value"`
+	GrossValue          *float32   `json:"gross_value"`
+	VatValue            *float32   `json:"vat_value"`
 	FileID              *int       `json:"file_id"`
 }
 
@@ -32,29 +33,59 @@ type ContractResponseDTO struct {
 	SerialNumber        string     `json:"serial_number"`
 	DateOfSigning       time.Time  `json:"date_of_signing"`
 	DateOfExpiry        *time.Time `json:"date_of_expiry"`
-	NetValue            float32    `json:"net_value"`
-	GrossValue          float32    `json:"gross_value"`
-	VatValue            float32    `json:"vat_value"`
+	NetValue            *float32   `json:"net_value"`
+	GrossValue          *float32   `json:"gross_value"`
+	VatValue            *float32   `json:"vat_value"`
 	FileID              *int       `json:"file_id"`
 	CreatedAt           time.Time  `json:"created_at"`
 	UpdatedAt           time.Time  `json:"updated_at"`
 }
 
 func (dto ContractDTO) ToContract() *data.Contract {
+	var netValue, grossValue, vatValue *int
+	if dto.NetValue != nil {
+		netValueInt := int(*dto.NetValue * 100)
+		netValue = &netValueInt
+	}
+
+	if dto.GrossValue != nil {
+		fmt.Printf("Original GrossValue: %v\n", *dto.GrossValue) // Debug line
+		grossValueInt := int(*dto.GrossValue * 100)
+		grossValue = &grossValueInt
+	}
+	if dto.VatValue != nil {
+		fmt.Printf("Original VatValue: %v\n", *dto.VatValue) // Debug line
+		vatValueInt := int(*dto.VatValue * 100)
+		vatValue = &vatValueInt
+	}
+	fmt.Printf("VatValue: %v\n, Gross value: %v\n", *grossValue, *vatValue) // Debug line
 	return &data.Contract{
 		PublicProcurementID: dto.PublicProcurementID,
 		SupplierID:          dto.SupplierID,
 		SerialNumber:        dto.SerialNumber,
 		DateOfSigning:       dto.DateOfSigning,
 		DateOfExpiry:        dto.DateOfExpiry,
-		NetValue:            int(dto.NetValue * 100),
-		GrossValue:          int(dto.GrossValue * 100),
-		VatValue:            int(dto.GrossValue * 100),
+		NetValue:            netValue,
+		GrossValue:          grossValue,
+		VatValue:            vatValue,
 		FileID:              dto.FileID,
 	}
 }
 
 func ToContractResponseDTO(data data.Contract) ContractResponseDTO {
+	var netValue, grossValue, vatValue *float32
+	if data.NetValue != nil {
+		netValueFloat := float32(*data.NetValue) / 100.0
+		netValue = &netValueFloat
+	}
+	if data.GrossValue != nil {
+		grossValueFloat := float32(*data.GrossValue) / 100.0
+		grossValue = &grossValueFloat
+	}
+	if data.VatValue != nil {
+		vatValueFloat := float32(*data.VatValue) / 100.0
+		vatValue = &vatValueFloat
+	}
 	return ContractResponseDTO{
 		ID:                  data.ID,
 		PublicProcurementID: data.PublicProcurementID,
@@ -62,9 +93,9 @@ func ToContractResponseDTO(data data.Contract) ContractResponseDTO {
 		SerialNumber:        data.SerialNumber,
 		DateOfSigning:       data.DateOfSigning,
 		DateOfExpiry:        data.DateOfExpiry,
-		NetValue:            float32(data.NetValue) / 100.0,
-		GrossValue:          float32(data.GrossValue) / 100.0,
-		VatValue:            float32(data.VatValue) / 100.0,
+		NetValue:            netValue,
+		GrossValue:          grossValue,
+		VatValue:            vatValue,
 		FileID:              data.FileID,
 		CreatedAt:           data.CreatedAt,
 		UpdatedAt:           data.UpdatedAt,

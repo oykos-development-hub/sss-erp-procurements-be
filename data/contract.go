@@ -14,9 +14,9 @@ type Contract struct {
 	SerialNumber        string     `db:"serial_number"`
 	DateOfSigning       time.Time  `db:"date_of_signing"`
 	DateOfExpiry        *time.Time `db:"date_of_expiry"`
-	NetValue            int        `db:"net_value"`
-	GrossValue          int        `db:"gross_value"`
-	VatValue            int        `db:"vat_value"`
+	NetValue            *int       `db:"net_value"`
+	GrossValue          *int       `db:"gross_value"`
+	VatValue            *int       `db:"vat_value"`
 	FileID              *int       `db:"file_id"`
 	CreatedAt           time.Time  `db:"created_at,omitempty"`
 	UpdatedAt           time.Time  `db:"updated_at"`
