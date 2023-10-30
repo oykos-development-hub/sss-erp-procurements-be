@@ -4,5 +4,5 @@ CREATE TABLE IF NOT EXISTS contract_article_overages (
     amount INTEGER NOT NULL,
     created_at TIMESTAMP,
     updated_at TIMESTAMP,
-    FOREIGN KEY (article_id) REFERENCES articles (id) ON UPDATE CASCADE ON DELETE CASCADE
+    FOREIGN KEY (article_id) REFERENCES contract_articles (id) ON UPDATE CASCADE ON DELETE CASCADE
 );
