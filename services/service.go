@@ -65,3 +65,11 @@ type ContractArticleService interface {
 	GetContractArticle(id int) (*dto.ContractArticleResponseDTO, error)
 	GetContractArticleList(input *dto.GetContractArticlesInputDTO) ([]dto.ContractArticleResponseDTO, *uint64, error)
 }
+
+type ContractArticleOverageService interface {
+	CreateContractArticleOverage(input dto.ContractArticleOverageDTO) (*dto.ContractArticleOverageResponseDTO, error)
+	UpdateContractArticleOverage(id int, input dto.ContractArticleOverageDTO) (*dto.ContractArticleOverageResponseDTO, error)
+	DeleteContractArticleOverage(id int) error
+	GetContractArticleOverage(id int) (*dto.ContractArticleOverageResponseDTO, error)
+	GetContractArticleOverageList(input dto.GetContractArticleOverageInputDTO) ([]dto.ContractArticleOverageResponseDTO, error)
+}

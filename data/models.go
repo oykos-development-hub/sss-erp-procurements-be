@@ -28,6 +28,7 @@ type Models struct {
 	OrganizationUnitArticle   OrganizationUnitArticle
 	OrganizationUnitPlanLimit OrganizationUnitPlanLimit
 	ContractArticle           ContractArticle
+	ContractArticleOverage    ContractArticleOverage
 }
 
 func New(databasePool *sql.DB) Models {
@@ -50,6 +51,7 @@ func New(databasePool *sql.DB) Models {
 		OrganizationUnitArticle:   OrganizationUnitArticle{},
 		OrganizationUnitPlanLimit: OrganizationUnitPlanLimit{},
 		ContractArticle:           ContractArticle{},
+		ContractArticleOverage:    ContractArticleOverage{},
 	}
 }
 

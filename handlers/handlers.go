@@ -12,6 +12,7 @@ type Handlers struct {
 	OrganizationUnitArticleHandler   OrganizationUnitArticleHandler
 	OrganizationUnitPlanLimitHandler OrganizationUnitPlanLimitHandler
 	ContractArticleHandler           ContractArticleHandler
+	ContractArticleOverageHandler    ContractArticleOverageHandler
 }
 
 type PlanHandler interface {
@@ -68,4 +69,12 @@ type ContractArticleHandler interface {
 	DeleteContractArticle(w http.ResponseWriter, r *http.Request)
 	GetContractArticleById(w http.ResponseWriter, r *http.Request)
 	GetContractArticleList(w http.ResponseWriter, r *http.Request)
+}
+
+type ContractArticleOverageHandler interface {
+	CreateContractArticleOverage(w http.ResponseWriter, r *http.Request)
+	UpdateContractArticleOverage(w http.ResponseWriter, r *http.Request)
+	DeleteContractArticleOverage(w http.ResponseWriter, r *http.Request)
+	GetContractArticleOverageById(w http.ResponseWriter, r *http.Request)
+	GetContractArticleOverageList(w http.ResponseWriter, r *http.Request)
 }
