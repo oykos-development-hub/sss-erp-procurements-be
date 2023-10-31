@@ -7,36 +7,41 @@ import (
 )
 
 type GetContractArticleOverageInputDTO struct {
-	ArticleID *int `json:"article_id"`
+	ArticleID          *int `json:"article_id"`
+	OrganizationUnitID *int `json:"organization_unit_id"`
 }
 
 type ContractArticleOverageDTO struct {
-	Amount    int `json:"amount"`
-	ArticleID int `json:"article_id"`
+	Amount             int `json:"amount"`
+	ArticleID          int `json:"article_id"`
+	OrganizationUnitID int `json:"organization_unit_id"`
 }
 
 type ContractArticleOverageResponseDTO struct {
-	ID        int       `json:"id"`
-	Amount    int       `json:"amount"`
-	ArticleID int       `json:"article_id"`
-	CreatedAt time.Time `json:"created_at"`
-	UpdatedAt time.Time `json:"updated_at"`
+	ID                 int       `json:"id"`
+	Amount             int       `json:"amount"`
+	ArticleID          int       `json:"article_id"`
+	OrganizationUnitID int       `json:"organization_unit_id"`
+	CreatedAt          time.Time `json:"created_at"`
+	UpdatedAt          time.Time `json:"updated_at"`
 }
 
 func (dto ContractArticleOverageDTO) ToContractArticleOverage() *data.ContractArticleOverage {
 	return &data.ContractArticleOverage{
-		ArticleID: dto.ArticleID,
-		Amount:    dto.Amount,
+		ArticleID:          dto.ArticleID,
+		Amount:             dto.Amount,
+		OrganizationUnitID: dto.OrganizationUnitID,
 	}
 }
 
 func ToContractArticleOverageResponseDTO(data data.ContractArticleOverage) ContractArticleOverageResponseDTO {
 	return ContractArticleOverageResponseDTO{
-		ID:        data.ID,
-		ArticleID: data.ArticleID,
-		Amount:    data.Amount,
-		CreatedAt: data.CreatedAt,
-		UpdatedAt: data.UpdatedAt,
+		ID:                 data.ID,
+		ArticleID:          data.ArticleID,
+		Amount:             data.Amount,
+		OrganizationUnitID: data.OrganizationUnitID,
+		CreatedAt:          data.CreatedAt,
+		UpdatedAt:          data.UpdatedAt,
 	}
 }
 

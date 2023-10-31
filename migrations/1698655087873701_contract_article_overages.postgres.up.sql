@@ -2,6 +2,7 @@ CREATE TABLE IF NOT EXISTS contract_article_overages (
     id serial PRIMARY KEY,
     article_id INTEGER NOT NULL,
     amount INTEGER NOT NULL,
+    organization_unit_id INTEGER NOT NULL,
     created_at TIMESTAMP,
     updated_at TIMESTAMP,
     FOREIGN KEY (article_id) REFERENCES contract_articles (id) ON UPDATE CASCADE ON DELETE CASCADE

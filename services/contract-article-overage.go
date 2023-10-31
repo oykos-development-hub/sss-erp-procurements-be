@@ -86,6 +86,10 @@ func (h *ContractArticleOverageServiceImpl) GetContractArticleOverageList(input 
 		cond["article_id"] = *input.ArticleID
 	}
 
+	if input.OrganizationUnitID != nil {
+		cond["organization_unit_id"] = *input.OrganizationUnitID
+	}
+
 	data, err := h.repo.GetAll(&cond)
 	if err != nil {
 		h.App.ErrorLog.Println(err)
