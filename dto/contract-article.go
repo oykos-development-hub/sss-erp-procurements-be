@@ -13,7 +13,7 @@ type GetContractArticlesInputDTO struct {
 type ContractArticleDTO struct {
 	ArticleID  int      `json:"public_procurement_article_id" validate:"required"`
 	ContractID int      `json:"public_procurement_contract_id" validate:"required"`
-	Amount     int      `json:"amount" validate:"required"`
+	Amount     int      `json:"amount"`
 	NetValue   *float32 `json:"net_value"`
 	GrossValue *float32 `json:"gross_value"`
 }
