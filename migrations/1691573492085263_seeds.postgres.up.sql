@@ -73,11 +73,11 @@ VALUES
 
 --spojeni ugovori i artikli
 INSERT INTO contract_articles (
-	article_id, contract_id, amount, net_value, gross_value, created_at,updated_at
+	article_id, contract_id, net_value, gross_value, created_at,updated_at
 )
 VALUES
-    (1, 1, 1, 1000.00, 1200.00, NOW(), NOW()),
-    (3, 2, 3, 1000.00, 1200.00, NOW(), NOW()),
-    (4, 3, 2, 200.00, 260.00, NOW(), NOW()),
-	(6, 4, 3, 1000.00, 1200.00, NOW(), NOW()),
-    (7, 5, 2, 200.00, 260.00, NOW(), NOW());
+    (1, 1, 1000.00, 1200.00, NOW(), NOW()),
+    (3, 2, 1000.00, 1200.00, NOW(), NOW()),
+    (4, 3, 200.00, 260.00, NOW(), NOW()),
+	(6, 4, 1000.00, 1200.00, NOW(), NOW()),
+    (7, 5, 200.00, 260.00, NOW(), NOW());

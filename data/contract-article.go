@@ -11,7 +11,6 @@ type ContractArticle struct {
 	ID         int       `db:"id,omitempty"`
 	ArticleID  int       `db:"article_id"`
 	ContractID int       `db:"contract_id"`
-	Amount     int       `db:"amount"`
 	NetValue   *int      `db:"net_value"`
 	GrossValue *int      `db:"gross_value"`
 	CreatedAt  time.Time `db:"created_at,omitempty"`

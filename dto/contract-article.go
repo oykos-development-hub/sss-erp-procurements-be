@@ -13,7 +13,6 @@ type GetContractArticlesInputDTO struct {
 type ContractArticleDTO struct {
 	ArticleID  int      `json:"public_procurement_article_id" validate:"required"`
 	ContractID int      `json:"public_procurement_contract_id" validate:"required"`
-	Amount     int      `json:"amount"`
 	NetValue   *float32 `json:"net_value"`
 	GrossValue *float32 `json:"gross_value"`
 }
@@ -22,7 +21,6 @@ type ContractArticleResponseDTO struct {
 	ID         int       `json:"id"`
 	ArticleID  int       `json:"public_procurement_article_id"`
 	ContractID int       `json:"public_procurement_contract_id"`
-	Amount     int       `json:"amount"`
 	NetValue   *float32  `json:"net_value"`
 	GrossValue *float32  `json:"gross_value"`
 	CreatedAt  time.Time `json:"created_at"`
@@ -33,7 +31,6 @@ func (dto ContractArticleDTO) ToContractArticle() *data.ContractArticle {
 	data := &data.ContractArticle{
 		ArticleID:  dto.ArticleID,
 		ContractID: dto.ContractID,
-		Amount:     dto.Amount,
 	}
 
 	if dto.NetValue != nil {
@@ -53,7 +50,6 @@ func ToContractArticleResponseDTO(data data.ContractArticle) ContractArticleResp
 		ID:         data.ID,
 		ArticleID:  data.ArticleID,
 		ContractID: data.ContractID,
-		Amount:     data.Amount,
 		CreatedAt:  data.CreatedAt,
 		UpdatedAt:  data.UpdatedAt,
 	}
