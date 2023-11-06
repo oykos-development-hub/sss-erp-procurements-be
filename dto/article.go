@@ -1,6 +1,7 @@
 package dto
 
 import (
+	"math"
 	"time"
 
 	"gitlab.sudovi.me/erp/procurements-api/data"
@@ -36,7 +37,7 @@ func (dto ArticleDTO) ToArticle() *data.Article {
 		Title:         dto.Title,
 		ItemID:        dto.ItemID,
 		Description:   dto.Description,
-		NetPrice:      int(dto.NetPrice * 100),
+		NetPrice:      int(math.Round(float64(dto.NetPrice) * 100)),
 		VATPercentage: dto.VATPercentage,
 		Manufacturer:  dto.Manufacturer,
 	}

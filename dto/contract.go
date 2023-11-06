@@ -1,6 +1,7 @@
 package dto
 
 import (
+	"math"
 	"time"
 
 	"gitlab.sudovi.me/erp/procurements-api/data"
@@ -43,16 +44,16 @@ type ContractResponseDTO struct {
 func (dto ContractDTO) ToContract() *data.Contract {
 	var netValue, grossValue, vatValue *int
 	if dto.NetValue != nil {
-		netValueInt := int(*dto.NetValue * 100)
+		netValueInt := int(math.Round(float64(*dto.NetValue) * 100))
 		netValue = &netValueInt
 	}
 
 	if dto.GrossValue != nil {
-		grossValueInt := int(*dto.GrossValue * 100)
+		grossValueInt := int(math.Round(float64(*dto.GrossValue) * 100))
 		grossValue = &grossValueInt
 	}
 	if dto.VatValue != nil {
-		vatValueInt := int(*dto.VatValue * 100)
+		vatValueInt := int(math.Round(float64(*dto.VatValue) * 100))
 		vatValue = &vatValueInt
 	}
 	return &data.Contract{

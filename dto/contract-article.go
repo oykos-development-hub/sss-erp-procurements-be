@@ -1,6 +1,7 @@
 package dto
 
 import (
+	"math"
 	"time"
 
 	"gitlab.sudovi.me/erp/procurements-api/data"
@@ -34,11 +35,11 @@ func (dto ContractArticleDTO) ToContractArticle() *data.ContractArticle {
 	}
 
 	if dto.NetValue != nil {
-		net := int(*dto.NetValue * 100) // converting float to cents
+		net := int(math.Round(float64(*dto.NetValue) * 100))
 		data.NetValue = &net
 	}
 	if dto.GrossValue != nil {
-		gross := int(*dto.GrossValue * 100) // converting float to cents
+		gross := int(math.Round(float64(*dto.GrossValue) * 100))
 		data.GrossValue = &gross
 	}
 
