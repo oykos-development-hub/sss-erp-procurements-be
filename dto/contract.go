@@ -28,18 +28,18 @@ type ContractDTO struct {
 }
 
 type ContractResponseDTO struct {
-	ID                  int           `json:"id"`
-	PublicProcurementID int           `json:"public_procurement_id"`
-	SupplierID          int           `json:"supplier_id"`
-	SerialNumber        string        `json:"serial_number"`
-	DateOfSigning       time.Time     `json:"date_of_signing"`
-	DateOfExpiry        *time.Time    `json:"date_of_expiry"`
-	NetValue            *float32      `json:"net_value"`
-	GrossValue          *float32      `json:"gross_value"`
-	VatValue            *float32      `json:"vat_value"`
-	File                pq.Int64Array `json:"file"`
-	CreatedAt           time.Time     `json:"created_at"`
-	UpdatedAt           time.Time     `json:"updated_at"`
+	ID                  int        `json:"id"`
+	PublicProcurementID int        `json:"public_procurement_id"`
+	SupplierID          int        `json:"supplier_id"`
+	SerialNumber        string     `json:"serial_number"`
+	DateOfSigning       time.Time  `json:"date_of_signing"`
+	DateOfExpiry        *time.Time `json:"date_of_expiry"`
+	NetValue            *float32   `json:"net_value"`
+	GrossValue          *float32   `json:"gross_value"`
+	VatValue            *float32   `json:"vat_value"`
+	File                []int      `json:"file"`
+	CreatedAt           time.Time  `json:"created_at"`
+	UpdatedAt           time.Time  `json:"updated_at"`
 }
 
 func (dto ContractDTO) ToContract() *data.Contract {
@@ -84,6 +84,12 @@ func ToContractResponseDTO(data data.Contract) ContractResponseDTO {
 		vatValueFloat := float32(*data.VatValue) / 100.0
 		vatValue = &vatValueFloat
 	}
+
+	array := make([]int, len(data.File))
+	for i, id := range data.File {
+		array[i] = int(id)
+	}
+
 	return ContractResponseDTO{
 		ID:                  data.ID,
 		PublicProcurementID: data.PublicProcurementID,
@@ -94,7 +100,7 @@ func ToContractResponseDTO(data data.Contract) ContractResponseDTO {
 		NetValue:            netValue,
 		GrossValue:          grossValue,
 		VatValue:            vatValue,
-		File:                data.File,
+		File:                array,
 		CreatedAt:           data.CreatedAt,
 		UpdatedAt:           data.UpdatedAt,
 	}
