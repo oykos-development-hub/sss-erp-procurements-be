@@ -16,30 +16,30 @@ type GetContractsInputDTO struct {
 }
 
 type ContractDTO struct {
-	PublicProcurementID int             `json:"public_procurement_id" validate:"required"`
-	SupplierID          int             `json:"supplier_id"  validate:"required"`
-	SerialNumber        string          `json:"serial_number"  validate:"required"`
-	DateOfSigning       time.Time       `json:"date_of_signing"  validate:"required"`
-	DateOfExpiry        *time.Time      `json:"date_of_expiry"`
-	NetValue            *float32        `json:"net_value"`
-	GrossValue          *float32        `json:"gross_value"`
-	VatValue            *float32        `json:"vat_value"`
-	File                []pq.Int64Array `json:"file"`
+	PublicProcurementID int           `json:"public_procurement_id" validate:"required"`
+	SupplierID          int           `json:"supplier_id"  validate:"required"`
+	SerialNumber        string        `json:"serial_number"  validate:"required"`
+	DateOfSigning       time.Time     `json:"date_of_signing"  validate:"required"`
+	DateOfExpiry        *time.Time    `json:"date_of_expiry"`
+	NetValue            *float32      `json:"net_value"`
+	GrossValue          *float32      `json:"gross_value"`
+	VatValue            *float32      `json:"vat_value"`
+	File                pq.Int64Array `json:"file"`
 }
 
 type ContractResponseDTO struct {
-	ID                  int             `json:"id"`
-	PublicProcurementID int             `json:"public_procurement_id"`
-	SupplierID          int             `json:"supplier_id"`
-	SerialNumber        string          `json:"serial_number"`
-	DateOfSigning       time.Time       `json:"date_of_signing"`
-	DateOfExpiry        *time.Time      `json:"date_of_expiry"`
-	NetValue            *float32        `json:"net_value"`
-	GrossValue          *float32        `json:"gross_value"`
-	VatValue            *float32        `json:"vat_value"`
-	File                []pq.Int64Array `json:"file"`
-	CreatedAt           time.Time       `json:"created_at"`
-	UpdatedAt           time.Time       `json:"updated_at"`
+	ID                  int           `json:"id"`
+	PublicProcurementID int           `json:"public_procurement_id"`
+	SupplierID          int           `json:"supplier_id"`
+	SerialNumber        string        `json:"serial_number"`
+	DateOfSigning       time.Time     `json:"date_of_signing"`
+	DateOfExpiry        *time.Time    `json:"date_of_expiry"`
+	NetValue            *float32      `json:"net_value"`
+	GrossValue          *float32      `json:"gross_value"`
+	VatValue            *float32      `json:"vat_value"`
+	File                pq.Int64Array `json:"file"`
+	CreatedAt           time.Time     `json:"created_at"`
+	UpdatedAt           time.Time     `json:"updated_at"`
 }
 
 func (dto ContractDTO) ToContract() *data.Contract {
