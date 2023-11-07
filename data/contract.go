@@ -3,23 +3,24 @@ package data
 import (
 	"time"
 
+	"github.com/lib/pq"
 	up "github.com/upper/db/v4"
 )
 
 // Contract struct
 type Contract struct {
-	ID                  int        `db:"id,omitempty"`
-	PublicProcurementID int        `db:"public_procurement_id,omitempty"`
-	SupplierID          int        `db:"supplier_id,omitempty"`
-	SerialNumber        string     `db:"serial_number"`
-	DateOfSigning       time.Time  `db:"date_of_signing"`
-	DateOfExpiry        *time.Time `db:"date_of_expiry"`
-	NetValue            *int       `db:"net_value"`
-	GrossValue          *int       `db:"gross_value"`
-	VatValue            *int       `db:"vat_value"`
-	File                []int      `db:"file"`
-	CreatedAt           time.Time  `db:"created_at,omitempty"`
-	UpdatedAt           time.Time  `db:"updated_at"`
+	ID                  int             `db:"id,omitempty"`
+	PublicProcurementID int             `db:"public_procurement_id,omitempty"`
+	SupplierID          int             `db:"supplier_id,omitempty"`
+	SerialNumber        string          `db:"serial_number"`
+	DateOfSigning       time.Time       `db:"date_of_signing"`
+	DateOfExpiry        *time.Time      `db:"date_of_expiry"`
+	NetValue            *int            `db:"net_value"`
+	GrossValue          *int            `db:"gross_value"`
+	VatValue            *int            `db:"vat_value"`
+	File                []pq.Int64Array `db:"file"`
+	CreatedAt           time.Time       `db:"created_at,omitempty"`
+	UpdatedAt           time.Time       `db:"updated_at"`
 }
 
 // Table returns the table name
