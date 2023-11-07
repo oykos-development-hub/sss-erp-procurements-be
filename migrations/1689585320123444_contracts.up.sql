@@ -10,6 +10,6 @@ CREATE TABLE IF NOT EXISTS contracts  (
     vat_vale integer,
     created_at TIMESTAMP NOT NULL,
     updated_at TIMESTAMP,
-    file_id INTEGER,
+    file INTEGER[],
     FOREIGN KEY (public_procurement_id) REFERENCES items (id) ON UPDATE CASCADE ON DELETE CASCADE
 );

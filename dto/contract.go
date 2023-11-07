@@ -23,7 +23,7 @@ type ContractDTO struct {
 	NetValue            *float32   `json:"net_value"`
 	GrossValue          *float32   `json:"gross_value"`
 	VatValue            *float32   `json:"vat_value"`
-	FileID              *int       `json:"file_id"`
+	File                []int      `json:"file"`
 }
 
 type ContractResponseDTO struct {
@@ -36,7 +36,7 @@ type ContractResponseDTO struct {
 	NetValue            *float32   `json:"net_value"`
 	GrossValue          *float32   `json:"gross_value"`
 	VatValue            *float32   `json:"vat_value"`
-	FileID              *int       `json:"file_id"`
+	File                []int      `json:"file"`
 	CreatedAt           time.Time  `json:"created_at"`
 	UpdatedAt           time.Time  `json:"updated_at"`
 }
@@ -65,7 +65,7 @@ func (dto ContractDTO) ToContract() *data.Contract {
 		NetValue:            netValue,
 		GrossValue:          grossValue,
 		VatValue:            vatValue,
-		FileID:              dto.FileID,
+		File:                dto.File,
 	}
 }
 
@@ -93,7 +93,7 @@ func ToContractResponseDTO(data data.Contract) ContractResponseDTO {
 		NetValue:            netValue,
 		GrossValue:          grossValue,
 		VatValue:            vatValue,
-		FileID:              data.FileID,
+		File:                data.File,
 		CreatedAt:           data.CreatedAt,
 		UpdatedAt:           data.UpdatedAt,
 	}

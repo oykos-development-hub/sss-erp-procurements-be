@@ -17,7 +17,7 @@ type Contract struct {
 	NetValue            *int       `db:"net_value"`
 	GrossValue          *int       `db:"gross_value"`
 	VatValue            *int       `db:"vat_value"`
-	FileID              *int       `db:"file_id"`
+	File                []int      `db:"file"`
 	CreatedAt           time.Time  `db:"created_at,omitempty"`
 	UpdatedAt           time.Time  `db:"updated_at"`
 }
