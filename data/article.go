@@ -15,6 +15,7 @@ type Article struct {
 	NetPrice      int       `db:"net_price"`
 	VATPercentage string    `db:"vat_percentage"`
 	Manufacturer  *string   `db:"manufacturer"`
+	Amount        *int      `db:"amount"`
 	CreatedAt     time.Time `db:"created_at,omitempty"`
 	UpdatedAt     time.Time `db:"updated_at"`
 }

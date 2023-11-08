@@ -18,6 +18,7 @@ type ArticleDTO struct {
 	NetPrice      float32 `json:"net_price" validate:"required"`
 	VATPercentage string  `json:"vat_percentage" validate:"required"`
 	Manufacturer  *string `json:"manufacturer"`
+	Amount        *int    `json:"amount"`
 }
 
 type ArticleResponseDTO struct {
@@ -28,6 +29,7 @@ type ArticleResponseDTO struct {
 	NetPrice      float32   `json:"net_price"`
 	VATPercentage string    `json:"vat_percentage"`
 	Manufacturer  *string   `json:"manufacturer"`
+	Amount        *int      `json:"amount"`
 	CreatedAt     time.Time `json:"created_at"`
 	UpdatedAt     time.Time `json:"updated_at"`
 }
@@ -40,6 +42,7 @@ func (dto ArticleDTO) ToArticle() *data.Article {
 		NetPrice:      int(math.Round(float64(dto.NetPrice) * 100)),
 		VATPercentage: dto.VATPercentage,
 		Manufacturer:  dto.Manufacturer,
+		Amount:        dto.Amount,
 	}
 }
 
@@ -52,6 +55,7 @@ func ToArticleResponseDTO(data data.Article) ArticleResponseDTO {
 		NetPrice:      float32(data.NetPrice) / 100.0,
 		VATPercentage: data.VATPercentage,
 		Manufacturer:  data.Manufacturer,
+		Amount:        data.Amount,
 		CreatedAt:     data.CreatedAt,
 		UpdatedAt:     data.UpdatedAt,
 	}
