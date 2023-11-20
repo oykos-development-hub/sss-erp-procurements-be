@@ -3,7 +3,9 @@ module gitlab.sudovi.me/erp/procurements-api
 go 1.20
 
 require (
+	github.com/360EntSecGroup-Skylar/excelize v1.4.1
 	github.com/go-chi/chi/v5 v5.0.10
+	github.com/lib/pq v1.10.9
 	github.com/oykos-development-hub/celeritas v1.2.8
 	github.com/upper/db/v4 v4.6.0
 )
@@ -58,7 +60,7 @@ require (
 	github.com/justinas/nosurf v1.1.1 // indirect
 	github.com/klauspost/compress v1.17.0 // indirect
 	github.com/leodido/go-urn v1.2.4 // indirect
-	github.com/lib/pq v1.10.9 // indirect
+	github.com/mohae/deepcopy v0.0.0-20170929034955-c48cc78d4826 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/robfig/cron/v3 v3.0.1 // indirect
 	github.com/segmentio/fasthash v1.0.3 // indirect
@@ -75,7 +77,6 @@ require (
 	golang.org/x/text v0.13.0 // indirect
 	google.golang.org/api v0.142.0 // indirect
 	google.golang.org/appengine v1.6.8 // indirect
-	google.golang.org/genproto v0.0.0-20230913181813-007df8e322eb // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20230920204549-e6e6cdab5c13 // indirect
 	google.golang.org/grpc v1.58.1 // indirect
 	google.golang.org/protobuf v1.31.0 // indirect

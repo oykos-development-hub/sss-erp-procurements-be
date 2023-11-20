@@ -8,7 +8,9 @@ import (
 )
 
 type GetArticleListInput struct {
-	ItemID *int `json:"public_procurement_id"`
+	ItemID      *int    `json:"public_procurement_id"`
+	Title       *string `json:"title"`
+	Description *string `json:"description"`
 }
 
 type ArticleDTO struct {

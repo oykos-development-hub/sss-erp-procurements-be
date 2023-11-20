@@ -48,7 +48,7 @@ func initApplication() *celeritas.Celeritas {
 	OrganizationUnitPlanLimitHandler := handlers.NewOrganizationUnitPlanLimitHandler(cel, OrganizationUnitPlanLimitService)
 
 	ContractArticleService := services.NewContractArticleServiceImpl(cel, models.ContractArticle)
-	ContractArticleHandler := handlers.NewContractArticleHandler(cel, ContractArticleService)
+	ContractArticleHandler := handlers.NewContractArticleHandler(cel, ContractArticleService, ArticleService)
 
 	ContractArticleOverageService := services.NewContractArticleOverageServiceImpl(cel, models.ContractArticleOverage)
 	ContractArticleOverageHandler := handlers.NewContractArticleOverageHandler(cel, ContractArticleOverageService)

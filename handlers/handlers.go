@@ -69,6 +69,7 @@ type ContractArticleHandler interface {
 	DeleteContractArticle(w http.ResponseWriter, r *http.Request)
 	GetContractArticleById(w http.ResponseWriter, r *http.Request)
 	GetContractArticleList(w http.ResponseWriter, r *http.Request)
+	ReadTemplate(w http.ResponseWriter, r *http.Request)
 }
 
 type ContractArticleOverageHandler interface {

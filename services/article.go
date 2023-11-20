@@ -86,6 +86,15 @@ func (h *ArticleServiceImpl) GetArticleList(input *dto.GetArticleListInput) ([]d
 		cond["item_id"] = *input.ItemID
 	}
 
+	if input.Title != nil {
+		cond["title"] = *input.Title
+	}
+
+	if input.Description != nil {
+		cond["description"] = *input.Description
+
+	}
+
 	data, err := h.repo.GetAll(&cond)
 	if err != nil {
 		h.App.ErrorLog.Println(err)

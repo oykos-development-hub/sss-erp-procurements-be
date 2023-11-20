@@ -28,6 +28,11 @@ type ContractArticleResponseDTO struct {
 	UpdatedAt  time.Time `json:"updated_at"`
 }
 
+type ArticleResponse struct {
+	Data   []ContractArticleResponseDTO `json:"data"`
+	Status string                       `json:"status"`
+}
+
 func (dto ContractArticleDTO) ToContractArticle() *data.ContractArticle {
 	data := &data.ContractArticle{
 		ArticleID:  dto.ArticleID,
