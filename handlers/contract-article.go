@@ -276,15 +276,17 @@ func (h *contractArticleHandlerImpl) ReadTemplate(w http.ResponseWriter, r *http
 			}
 
 			if len(res) == 0 {
-				h.App.ErrorLog.Printf("Invalid article")
-				_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
+				response := dto.ArticleResponse{
+					Status: "failed",
+				}
+				_ = h.App.WriteDataResponse(w, http.StatusBadRequest, "Article \""+title+"\" is not valid", response)
 				return
 			}
 
 			vatPercentage, _ := strconv.ParseFloat(res[0].VATPercentage, 32)
 			vatFloat32 := float32(vatPercentage)
 			article.ArticleID = res[0].ID
-			netValue := price - price*vatFloat32
+			netValue := price - price*vatFloat32/100
 			article.NetValue = &netValue
 			article.GrossValue = &price
 
