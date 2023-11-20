@@ -291,7 +291,7 @@ func (h *contractArticleHandlerImpl) ReadTemplate(w http.ResponseWriter, r *http
 				response := dto.ArticleResponse{
 					Status: "failed",
 				}
-				_ = h.App.WriteDataResponse(w, http.StatusBadRequest, "Article \""+title+"\" is not valid", response)
+				_ = h.App.WriteDataResponse(w, http.StatusBadRequest, "Artikal \""+title+"\" nije validan", response)
 				return
 			}
 
