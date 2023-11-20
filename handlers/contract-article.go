@@ -165,6 +165,18 @@ func (h *contractArticleHandlerImpl) ReadTemplate(w http.ResponseWriter, r *http
 		return
 	}
 
+	contractid := r.FormValue("contract_id")
+
+	contractID, err := strconv.Atoi(contractid)
+
+	if err != nil {
+		response := dto.ArticleResponse{
+			Status: "failed",
+		}
+		_ = h.App.WriteDataResponse(w, http.StatusBadRequest, "You must provide a valid public_procurement_id", response)
+		return
+	}
+
 	// Save the file to disk
 	tempFile, err := os.CreateTemp("", "uploaded-file-")
 	if err != nil {
@@ -289,6 +301,7 @@ func (h *contractArticleHandlerImpl) ReadTemplate(w http.ResponseWriter, r *http
 			netValue := price - price*vatFloat32/100
 			article.NetValue = &netValue
 			article.GrossValue = &price
+			article.ContractID = contractID
 
 			articles = append(articles, article)
 		}
