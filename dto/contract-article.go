@@ -9,6 +9,7 @@ import (
 
 type GetContractArticlesInputDTO struct {
 	ContractID *int `json:"contract_id"`
+	ArticleID  *int `json:"article_id"`
 }
 
 type ContractArticleDTO struct {

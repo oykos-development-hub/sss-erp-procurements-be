@@ -86,6 +86,10 @@ func (h *ContractArticleServiceImpl) GetContractArticleList(input *dto.GetContra
 		cond["contract_id"] = *input.ContractID
 	}
 
+	if input.ArticleID != nil {
+		cond["article_id"] = *input.ArticleID
+	}
+
 	data, total, err := h.repo.GetAll(&cond)
 	if err != nil {
 		h.App.ErrorLog.Println(err)
