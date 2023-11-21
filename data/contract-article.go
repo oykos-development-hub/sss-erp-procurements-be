@@ -8,13 +8,14 @@ import (
 
 // Contract article struct
 type ContractArticle struct {
-	ID         int       `db:"id,omitempty"`
-	ArticleID  int       `db:"article_id"`
-	ContractID int       `db:"contract_id"`
-	NetValue   *int      `db:"net_value"`
-	GrossValue *int      `db:"gross_value"`
-	CreatedAt  time.Time `db:"created_at,omitempty"`
-	UpdatedAt  time.Time `db:"updated_at"`
+	ID           int       `db:"id,omitempty"`
+	ArticleID    int       `db:"article_id"`
+	ContractID   int       `db:"contract_id"`
+	NetValue     *int      `db:"net_value"`
+	GrossValue   *int      `db:"gross_value"`
+	UsedArticles int       `db:"used_articles"`
+	CreatedAt    time.Time `db:"created_at,omitempty"`
+	UpdatedAt    time.Time `db:"updated_at"`
 }
 
 // Table returns the table name

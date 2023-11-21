@@ -2,6 +2,7 @@ CREATE TABLE IF NOT EXISTS contract_articles  (
     id serial PRIMARY KEY,
     article_id INTEGER NOT NULL,
     contract_id INTEGER NOT NULL,
+    used_articles INTEGER DEFAULT 0,
     net_value INTEGER,
     gross_value INTEGER,
     created_at TIMESTAMP,

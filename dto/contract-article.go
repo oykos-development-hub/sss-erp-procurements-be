@@ -12,20 +12,22 @@ type GetContractArticlesInputDTO struct {
 }
 
 type ContractArticleDTO struct {
-	ArticleID  int      `json:"public_procurement_article_id" validate:"required"`
-	ContractID int      `json:"public_procurement_contract_id" validate:"required"`
-	NetValue   *float32 `json:"net_value"`
-	GrossValue *float32 `json:"gross_value"`
+	ArticleID    int      `json:"public_procurement_article_id" validate:"required"`
+	ContractID   int      `json:"public_procurement_contract_id" validate:"required"`
+	NetValue     *float32 `json:"net_value"`
+	GrossValue   *float32 `json:"gross_value"`
+	UsedArticles int      `json:"used_articles"`
 }
 
 type ContractArticleResponseDTO struct {
-	ID         int       `json:"id"`
-	ArticleID  int       `json:"public_procurement_article_id"`
-	ContractID int       `json:"public_procurement_contract_id"`
-	NetValue   *float32  `json:"net_value"`
-	GrossValue *float32  `json:"gross_value"`
-	CreatedAt  time.Time `json:"created_at"`
-	UpdatedAt  time.Time `json:"updated_at"`
+	ID           int       `json:"id"`
+	ArticleID    int       `json:"public_procurement_article_id"`
+	ContractID   int       `json:"public_procurement_contract_id"`
+	NetValue     *float32  `json:"net_value"`
+	GrossValue   *float32  `json:"gross_value"`
+	UsedArticles int       `json:"used_articles"`
+	CreatedAt    time.Time `json:"created_at"`
+	UpdatedAt    time.Time `json:"updated_at"`
 }
 
 type ArticleResponse struct {
@@ -35,8 +37,9 @@ type ArticleResponse struct {
 
 func (dto ContractArticleDTO) ToContractArticle() *data.ContractArticle {
 	data := &data.ContractArticle{
-		ArticleID:  dto.ArticleID,
-		ContractID: dto.ContractID,
+		ArticleID:    dto.ArticleID,
+		ContractID:   dto.ContractID,
+		UsedArticles: dto.UsedArticles,
 	}
 
 	if dto.NetValue != nil {
@@ -53,11 +56,12 @@ func (dto ContractArticleDTO) ToContractArticle() *data.ContractArticle {
 
 func ToContractArticleResponseDTO(data data.ContractArticle) ContractArticleResponseDTO {
 	res := ContractArticleResponseDTO{
-		ID:         data.ID,
-		ArticleID:  data.ArticleID,
-		ContractID: data.ContractID,
-		CreatedAt:  data.CreatedAt,
-		UpdatedAt:  data.UpdatedAt,
+		ID:           data.ID,
+		ArticleID:    data.ArticleID,
+		ContractID:   data.ContractID,
+		UsedArticles: data.UsedArticles,
+		CreatedAt:    data.CreatedAt,
+		UpdatedAt:    data.UpdatedAt,
 	}
 
 	if data.NetValue != nil {
