@@ -76,5 +76,5 @@ func routes(app *celeritas.Celeritas, middleware *middleware.Middleware, handler
 		rt.Delete("/contract-article-overages/{id}", handlers.ContractArticleOverageHandler.DeleteContractArticleOverage)
 	})
 
-	return app.Routes
+	return r
 }
