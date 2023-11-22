@@ -92,7 +92,10 @@ func (h *ArticleServiceImpl) GetArticleList(input *dto.GetArticleListInput) ([]d
 
 	if input.Description != nil {
 		cond["description"] = *input.Description
+	}
 
+	if input.VisibilityType != nil {
+		cond["visibility_type"] = *input.VisibilityType
 	}
 
 	data, err := h.repo.GetAll(&cond)

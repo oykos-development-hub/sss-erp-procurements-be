@@ -8,16 +8,17 @@ import (
 
 // Article struct
 type Article struct {
-	ID            int       `db:"id,omitempty"`
-	ItemID        int       `db:"item_id"`
-	Title         string    `db:"title"`
-	Description   string    `db:"description"`
-	NetPrice      int       `db:"net_price"`
-	VATPercentage string    `db:"vat_percentage"`
-	Manufacturer  *string   `db:"manufacturer"`
-	Amount        *int      `db:"amount"`
-	CreatedAt     time.Time `db:"created_at,omitempty"`
-	UpdatedAt     time.Time `db:"updated_at"`
+	ID             int       `db:"id,omitempty"`
+	ItemID         int       `db:"item_id"`
+	Title          string    `db:"title"`
+	Description    string    `db:"description"`
+	NetPrice       int       `db:"net_price"`
+	VATPercentage  string    `db:"vat_percentage"`
+	Manufacturer   *string   `db:"manufacturer"`
+	Amount         *int      `db:"amount"`
+	VisibilityType int       `db:"visibility_type"`
+	CreatedAt      time.Time `db:"created_at,omitempty"`
+	UpdatedAt      time.Time `db:"updated_at"`
 }
 
 // Table returns the table name
