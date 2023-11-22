@@ -5,15 +5,27 @@ import (
 	"gitlab.sudovi.me/erp/procurements-api/middleware"
 
 	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/cors"
 	"github.com/oykos-development-hub/celeritas"
 )
 
 func routes(app *celeritas.Celeritas, middleware *middleware.Middleware, handlers *handlers.Handlers) *chi.Mux {
 	// middleware must come before any routes
 
-	//api
-	app.Routes.Route("/api", func(rt chi.Router) {
+	r := chi.NewRouter()
 
+	// Konfigurišite CORS
+	cors := cors.New(cors.Options{
+		AllowedOrigins:   []string{"*"},
+		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type", "X-CSRF-Token"},
+		AllowCredentials: true,
+		MaxAge:           300,
+	})
+
+	r.Use(cors.Handler)
+
+	r.Route("/api", func(rt chi.Router) {
 		rt.Post("/plans", handlers.PlanHandler.CreatePlan)
 		rt.Get("/plans/{id}", handlers.PlanHandler.GetPlanById)
 		rt.Get("/plans", handlers.PlanHandler.GetPlanList)
