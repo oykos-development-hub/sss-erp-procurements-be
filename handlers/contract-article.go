@@ -215,10 +215,6 @@ func (h *contractArticleHandlerImpl) ReadTemplate(w http.ResponseWriter, r *http
 	sheetMap := xlsFile.GetSheetMap()
 
 	for _, sheetName := range sheetMap {
-		if sheetName != "Stavke" {
-			continue
-		}
-
 		rows, err := xlsFile.Rows(sheetName)
 		if err != nil {
 			response := dto.ArticleResponse{
@@ -271,6 +267,10 @@ func (h *contractArticleHandlerImpl) ReadTemplate(w http.ResponseWriter, r *http
 					}
 					price = float32(floatValue)
 				}
+			}
+
+			if title == "" || description == "" || price == 0 {
+				continue
 			}
 
 			input := dto.GetArticleListInput{
