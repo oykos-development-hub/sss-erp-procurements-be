@@ -295,6 +295,22 @@ func (h *contractArticleHandlerImpl) ReadTemplate(w http.ResponseWriter, r *http
 				return
 			}
 
+			filter := dto.GetContractArticlesInputDTO{
+				ArticleID: &res[0].ID,
+			}
+
+			contractArticle, _, err := h.service.GetContractArticleList(&filter)
+
+			if err != nil {
+				h.App.ErrorLog.Printf("Error fetching contract article: %v", err)
+				_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
+				return
+			}
+
+			if len(contractArticle) > 0 {
+				article.ID = contractArticle[0].ID
+			}
+
 			vatPercentage, _ := strconv.ParseFloat(res[0].VATPercentage, 32)
 			vatFloat32 := float32(vatPercentage)
 			article.ArticleID = res[0].ID
