@@ -314,9 +314,9 @@ func (h *contractArticleHandlerImpl) ReadTemplate(w http.ResponseWriter, r *http
 			vatPercentage, _ := strconv.ParseFloat(res[0].VATPercentage, 32)
 			vatFloat32 := float32(vatPercentage)
 			article.ArticleID = res[0].ID
-			netValue := price - price*vatFloat32/100
-			article.NetValue = &netValue
-			article.GrossValue = &price
+			grossValue := price + price*vatFloat32/100
+			article.NetValue = &price
+			article.GrossValue = &grossValue
 			article.ContractID = contractID
 
 			articles = append(articles, article)
