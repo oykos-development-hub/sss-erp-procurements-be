@@ -64,7 +64,6 @@ func (h *ArticleServiceImpl) DeleteArticle(id int) error {
 		h.App.ErrorLog.Println(err)
 		return errors.ErrInternalServer
 	}
-
 	return nil
 }
 
