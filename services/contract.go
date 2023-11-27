@@ -81,6 +81,7 @@ func (h *ContractServiceImpl) GetContract(id int) (*dto.ContractResponseDTO, err
 
 func (h *ContractServiceImpl) GetContractList(input dto.GetContractsInputDTO) ([]dto.ContractResponseDTO, *uint64, error) {
 	cond := up.Cond{}
+	var orders []string
 
 	if input.ProcurementID != nil {
 		cond["public_procurement_id"] = input.ProcurementID
@@ -88,8 +89,16 @@ func (h *ContractServiceImpl) GetContractList(input dto.GetContractsInputDTO) ([
 	if input.SupplierID != nil {
 		cond["supplier_id"] = input.SupplierID
 	}
+	if input.SortDateOfExpiry != nil {
+		if *input.SortDateOfExpiry == "asc" {
+			orders = append(orders, "-date_of_expiry")
+		} else {
+			orders = append(orders, "date_of_expiry")
+		}
+	}
+	orders = append(orders, "-created_at")
 
-	res, total, err := h.repo.GetAll(input.Page, input.Size, &cond)
+	res, total, err := h.repo.GetAll(input.Page, input.Size, &cond, orders)
 	if err != nil {
 		h.App.ErrorLog.Println(err)
 		return nil, nil, errors.ErrInternalServer

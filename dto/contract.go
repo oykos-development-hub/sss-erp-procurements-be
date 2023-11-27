@@ -9,10 +9,11 @@ import (
 )
 
 type GetContractsInputDTO struct {
-	Page          *int `json:"page" validate:"omitempty"`
-	Size          *int `json:"size" validate:"omitempty"`
-	ProcurementID *int `json:"procurement_id"`
-	SupplierID    *int `json:"supplier_id"`
+	Page             *int    `json:"page" validate:"omitempty"`
+	Size             *int    `json:"size" validate:"omitempty"`
+	ProcurementID    *int    `json:"procurement_id"`
+	SupplierID       *int    `json:"supplier_id"`
+	SortDateOfExpiry *string `json:"sort_date_of_expiry"`
 }
 
 type ContractDTO struct {
