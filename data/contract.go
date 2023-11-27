@@ -29,7 +29,7 @@ func (t *Contract) Table() string {
 }
 
 // GetAll gets all records from the database, using upper
-func (t *Contract) GetAll(page *int, size *int, condition *up.Cond, orders []string) ([]*Contract, *uint64, error) {
+func (t *Contract) GetAll(page *int, size *int, condition *up.Cond, orders []interface{}) ([]*Contract, *uint64, error) {
 	collection := upper.Collection(t.Table())
 	var all []*Contract
 	var res up.Result
@@ -49,7 +49,7 @@ func (t *Contract) GetAll(page *int, size *int, condition *up.Cond, orders []str
 		res = paginateResult(res, *page, *size)
 	}
 
-	err = res.OrderBy(orders).All(&all)
+	err = res.OrderBy(orders...).All(&all)
 	if err != nil {
 		return nil, nil, err
 	}

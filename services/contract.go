@@ -81,7 +81,7 @@ func (h *ContractServiceImpl) GetContract(id int) (*dto.ContractResponseDTO, err
 
 func (h *ContractServiceImpl) GetContractList(input dto.GetContractsInputDTO) ([]dto.ContractResponseDTO, *uint64, error) {
 	cond := up.Cond{}
-	var orders []string
+	var orders []interface{}
 
 	if input.ProcurementID != nil {
 		cond["public_procurement_id"] = input.ProcurementID
