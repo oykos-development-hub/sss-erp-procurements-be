@@ -89,13 +89,46 @@ func (h *ContractServiceImpl) GetContractList(input dto.GetContractsInputDTO) ([
 	if input.SupplierID != nil {
 		cond["supplier_id"] = input.SupplierID
 	}
-	if input.SortDateOfExpiry != nil {
-		if *input.SortDateOfExpiry == "asc" {
+	if input.SortByDateOfExpiry != nil {
+		if *input.SortByDateOfExpiry == "asc" {
 			orders = append(orders, "-date_of_expiry")
 		} else {
 			orders = append(orders, "date_of_expiry")
 		}
 	}
+
+	if input.SortByDateOfSigning != nil {
+		if *input.SortByDateOfSigning == "asc" {
+			orders = append(orders, "-date_of_signing")
+		} else {
+			orders = append(orders, "date_of_signing")
+		}
+	}
+
+	if input.SortByGrossValue != nil {
+		if *input.SortByGrossValue == "asc" {
+			orders = append(orders, "-gross_value")
+		} else {
+			orders = append(orders, "gross_value")
+		}
+	}
+
+	if input.SortBySerialNumber != nil {
+		if *input.SortBySerialNumber == "asc" {
+			orders = append(orders, "-serial_number")
+		} else {
+			orders = append(orders, "serial_number")
+		}
+	}
+
+	if input.SortBySupplierID != nil {
+		if *input.SortBySupplierID == "asc" {
+			orders = append(orders, "-supplier_id")
+		} else {
+			orders = append(orders, "supplier_id")
+		}
+	}
+
 	orders = append(orders, "-created_at")
 
 	res, total, err := h.repo.GetAll(input.Page, input.Size, &cond, orders)

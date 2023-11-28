@@ -28,7 +28,7 @@ func (t *Plan) Table() string {
 }
 
 // GetAll gets all records from the database, using upper
-func (t *Plan) GetAll(page *int, size *int, condition *up.Cond) ([]*Plan, *uint64, error) {
+func (t *Plan) GetAll(page *int, size *int, condition *up.Cond, orders []interface{}) ([]*Plan, *uint64, error) {
 	collection := upper.Collection(t.Table())
 	var all []*Plan
 	var res up.Result
@@ -48,7 +48,7 @@ func (t *Plan) GetAll(page *int, size *int, condition *up.Cond) ([]*Plan, *uint6
 		res = paginateResult(res, *page, *size)
 	}
 
-	err = res.OrderBy("created_at desc").All(&all)
+	err = res.OrderBy(orders...).All(&all)
 	if err != nil {
 		return nil, nil, err
 	}

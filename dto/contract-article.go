@@ -8,8 +8,9 @@ import (
 )
 
 type GetContractArticlesInputDTO struct {
-	ContractID *int `json:"contract_id"`
-	ArticleID  *int `json:"article_id"`
+	ContractID     *int    `json:"contract_id"`
+	ArticleID      *int    `json:"article_id"`
+	SortByNetValue *string `json:"sort_by_net_value"`
 }
 
 type ContractArticleDTO struct {

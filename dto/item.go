@@ -36,9 +36,13 @@ type ItemResponseDTO struct {
 }
 
 type GetItemsInputDTO struct {
-	Page   *int `json:"page" validate:"omitempty"`
-	Size   *int `json:"size" validate:"omitempty"`
-	PlanID *int `json:"plan_id" validate:"omitempty"`
+	Page                   *int    `json:"page" validate:"omitempty"`
+	Size                   *int    `json:"size" validate:"omitempty"`
+	PlanID                 *int    `json:"plan_id" validate:"omitempty"`
+	SortByTitle            *string `json:"sort_by_title"`
+	SortBySerialNumber     *string `json:"sort_by_serial_number"`
+	SortByDateOfPublishing *string `json:"sort_by_date_of_publishing"`
+	SortByDateOfAwarding   *string `json:"sort_by_date_of_awarding"`
 }
 
 func (dto ItemDTO) ToItem() *data.Item {

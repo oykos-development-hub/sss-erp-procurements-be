@@ -81,6 +81,7 @@ func (h *ContractArticleServiceImpl) GetContractArticle(id int) (*dto.ContractAr
 
 func (h *ContractArticleServiceImpl) GetContractArticleList(input *dto.GetContractArticlesInputDTO) ([]dto.ContractArticleResponseDTO, *uint64, error) {
 	cond := up.Cond{}
+	var orders []interface{}
 
 	if input.ContractID != nil {
 		cond["contract_id"] = *input.ContractID
@@ -90,7 +91,17 @@ func (h *ContractArticleServiceImpl) GetContractArticleList(input *dto.GetContra
 		cond["article_id"] = *input.ArticleID
 	}
 
-	data, total, err := h.repo.GetAll(&cond)
+	if input.SortByNetValue != nil {
+		if *input.SortByNetValue == "asc" {
+			orders = append(orders, "-net_value")
+		} else {
+			orders = append(orders, "net_value")
+		}
+	}
+
+	orders = append(orders, "-created_at")
+
+	data, total, err := h.repo.GetAll(&cond, orders)
 	if err != nil {
 		h.App.ErrorLog.Println(err)
 		return nil, nil, errors.ErrInternalServer

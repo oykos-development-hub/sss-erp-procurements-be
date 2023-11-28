@@ -81,11 +81,46 @@ func (h *ItemServiceImpl) GetItem(id int) (*dto.ItemResponseDTO, error) {
 
 func (h *ItemServiceImpl) GetItemList(input dto.GetItemsInputDTO) ([]dto.ItemResponseDTO, *uint64, error) {
 	cond := up.Cond{}
+	var orders []interface{}
 	if input.PlanID != nil {
 		cond["plan_id"] = input.PlanID
 	}
 
-	res, total, err := h.repo.GetAll(input.Page, input.Size, &cond)
+	if input.SortByDateOfAwarding != nil {
+		if *input.SortByDateOfAwarding == "asc" {
+			orders = append(orders, "-date_of_awarding")
+		} else {
+			orders = append(orders, "date_of_awarding")
+		}
+	}
+
+	if input.SortByDateOfPublishing != nil {
+		if *input.SortByDateOfPublishing == "asc" {
+			orders = append(orders, "-date_of_publishing")
+		} else {
+			orders = append(orders, "date_of_publishing")
+		}
+	}
+
+	if input.SortBySerialNumber != nil {
+		if *input.SortBySerialNumber == "asc" {
+			orders = append(orders, "-serial_number")
+		} else {
+			orders = append(orders, "serial_number")
+		}
+	}
+
+	if input.SortByTitle != nil {
+		if *input.SortByTitle == "asc" {
+			orders = append(orders, "-title")
+		} else {
+			orders = append(orders, "title")
+		}
+	}
+
+	orders = append(orders, "-created_at")
+
+	res, total, err := h.repo.GetAll(input.Page, input.Size, &cond, orders)
 	if err != nil {
 		h.App.ErrorLog.Println(err)
 		return nil, nil, errors.ErrInternalServer

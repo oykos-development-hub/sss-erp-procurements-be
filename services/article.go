@@ -80,6 +80,7 @@ func (h *ArticleServiceImpl) GetArticle(id int) (*dto.ArticleResponseDTO, error)
 
 func (h *ArticleServiceImpl) GetArticleList(input *dto.GetArticleListInput) ([]dto.ArticleResponseDTO, error) {
 	cond := up.Cond{}
+	var orders []interface{}
 
 	if input.ItemID != nil {
 		cond["item_id"] = *input.ItemID
@@ -97,7 +98,25 @@ func (h *ArticleServiceImpl) GetArticleList(input *dto.GetArticleListInput) ([]d
 		cond["visibility_type"] = *input.VisibilityType
 	}
 
-	data, err := h.repo.GetAll(&cond)
+	if input.SortByPrice != nil {
+		if *input.SortByPrice == "asc" {
+			orders = append(orders, "-price")
+		} else {
+			orders = append(orders, "price")
+		}
+	}
+
+	if input.SortByTitle != nil {
+		if *input.SortByTitle == "asc" {
+			orders = append(orders, "-title")
+		} else {
+			orders = append(orders, "title")
+		}
+	}
+
+	orders = append(orders, "-created_at")
+
+	data, err := h.repo.GetAll(&cond, orders)
 	if err != nil {
 		h.App.ErrorLog.Println(err)
 		return nil, errors.ErrInternalServer

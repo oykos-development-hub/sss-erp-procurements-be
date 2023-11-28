@@ -24,7 +24,7 @@ func (t *ContractArticle) Table() string {
 }
 
 // GetAll gets all records from the database, using upper
-func (t *ContractArticle) GetAll(condition *up.Cond) ([]*ContractArticle, *uint64, error) {
+func (t *ContractArticle) GetAll(condition *up.Cond, orders []interface{}) ([]*ContractArticle, *uint64, error) {
 	collection := upper.Collection(t.Table())
 	var all []*ContractArticle
 	var res up.Result
@@ -40,7 +40,7 @@ func (t *ContractArticle) GetAll(condition *up.Cond) ([]*ContractArticle, *uint6
 		return nil, nil, err
 	}
 
-	err = res.OrderBy("created_at desc").All(&all)
+	err = res.OrderBy(orders...).All(&all)
 	if err != nil {
 		return nil, nil, err
 	}

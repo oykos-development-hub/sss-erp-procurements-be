@@ -12,6 +12,8 @@ type GetArticleListInput struct {
 	Title          *string `json:"title"`
 	Description    *string `json:"description"`
 	VisibilityType *int    `json:"visibility_type"`
+	SortByTitle    *string `json:"sort_by_title"`
+	SortByPrice    *string `json:"sort_by_price"`
 }
 
 type ArticleDTO struct {

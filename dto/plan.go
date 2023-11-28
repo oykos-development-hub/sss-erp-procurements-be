@@ -7,11 +7,14 @@ import (
 )
 
 type GetPlansInputDTO struct {
-	Page           *int    `json:"page"`
-	Size           *int    `json:"size"`
-	IsPreBudget    *bool   `json:"is_pre_budget"`
-	Year           *string `json:"year"`
-	TargetBudgetID *int    `json:"target_budget_id"`
+	Page                   *int    `json:"page"`
+	Size                   *int    `json:"size"`
+	IsPreBudget            *bool   `json:"is_pre_budget"`
+	Year                   *string `json:"year"`
+	TargetBudgetID         *int    `json:"target_budget_id"`
+	SortByYear             *string `json:"sort_by_year"`
+	SortByTitle            *string `json:"sort_by_title"`
+	SortByDateOfPublishing *string `json:"sort_by_date_of_publishing"`
 }
 
 type PlanDTO struct {

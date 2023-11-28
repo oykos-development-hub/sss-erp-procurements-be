@@ -30,7 +30,7 @@ func (t *Item) Table() string {
 
 // GetAll gets all records from the database, using upper
 
-func (t *Item) GetAll(page *int, size *int, condition *up.Cond) ([]*Item, *uint64, error) {
+func (t *Item) GetAll(page *int, size *int, condition *up.Cond, orders []interface{}) ([]*Item, *uint64, error) {
 	collection := upper.Collection(t.Table())
 	var all []*Item
 	var res up.Result
@@ -50,7 +50,7 @@ func (t *Item) GetAll(page *int, size *int, condition *up.Cond) ([]*Item, *uint6
 		res = paginateResult(res, *page, *size)
 	}
 
-	err = res.OrderBy("created_at desc").All(&all)
+	err = res.OrderBy(orders...).All(&all)
 	if err != nil {
 		return nil, nil, err
 	}

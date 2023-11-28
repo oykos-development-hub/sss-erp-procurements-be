@@ -81,6 +81,8 @@ func (h *PlanServiceImpl) GetPlan(id int) (*dto.PlanResponseDTO, error) {
 
 func (h *PlanServiceImpl) GetPlanList(input dto.GetPlansInputDTO) ([]dto.PlanResponseDTO, *uint64, error) {
 	cond := up.Cond{}
+	var orders []interface{}
+
 	if input.IsPreBudget != nil {
 		if *input.IsPreBudget {
 			cond["is_pre_budget"] = true
@@ -95,7 +97,33 @@ func (h *PlanServiceImpl) GetPlanList(input dto.GetPlansInputDTO) ([]dto.PlanRes
 		cond["pre_budget_id"] = input.TargetBudgetID
 	}
 
-	res, total, err := h.repo.GetAll(input.Page, input.Size, &cond)
+	if input.SortByDateOfPublishing != nil {
+		if *input.SortByDateOfPublishing == "asc" {
+			orders = append(orders, "-date_of_publishing")
+		} else {
+			orders = append(orders, "date_of_publishing")
+		}
+	}
+
+	if input.SortByTitle != nil {
+		if *input.SortByTitle == "asc" {
+			orders = append(orders, "-title")
+		} else {
+			orders = append(orders, "title")
+		}
+	}
+
+	if input.SortByYear != nil {
+		if *input.SortByYear == "asc" {
+			orders = append(orders, "-year")
+		} else {
+			orders = append(orders, "year")
+		}
+	}
+
+	orders = append(orders, "-created_at")
+
+	res, total, err := h.repo.GetAll(input.Page, input.Size, &cond, orders)
 	if err != nil {
 		h.App.ErrorLog.Println(err)
 		return nil, nil, errors.ErrInternalServer
