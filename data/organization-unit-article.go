@@ -14,6 +14,7 @@ type OrganizationUnitArticle struct {
 	Amount              int       `db:"amount"`
 	Status              string    `db:"status"`
 	IsRejected          bool      `db:"is_rejected"`
+	UsedArticles        int       `db:"used_articles"`
 	RejectedDescription *string   `db:"rejected_description"`
 	CreatedAt           time.Time `db:"created_at,omitempty"`
 	UpdatedAt           time.Time `db:"updated_at"`

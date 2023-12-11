@@ -5,6 +5,7 @@ CREATE TABLE IF NOT EXISTS organization_unit_articles (
     amount INTEGER NOT NULL,
     status text,
     is_rejected boolean,
+        used_articles INTEGER DEFAULT 0,
     rejected_description text,
     created_at TIMESTAMP,
     updated_at TIMESTAMP,

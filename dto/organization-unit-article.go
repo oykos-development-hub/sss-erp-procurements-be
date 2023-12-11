@@ -17,6 +17,7 @@ type OrganizationUnitArticleDTO struct {
 	Amount              int     `json:"amount"`
 	Status              string  `json:"status"`
 	IsRejected          bool    `json:"is_rejected"`
+	UsedArticles        int     `json:"used_articles"`
 	RejectedDescription *string `json:"rejected_description"`
 }
 
@@ -27,6 +28,7 @@ type OrganizationUnitArticleResponseDTO struct {
 	Amount              int       `json:"amount"`
 	Status              string    `json:"status"`
 	IsRejected          bool      `json:"is_rejected"`
+	UsedArticles        int       `json:"used_articles"`
 	RejectedDescription *string   `json:"rejected_description"`
 	CreatedAt           time.Time `json:"created_at"`
 	UpdatedAt           time.Time `json:"updated_at"`
@@ -38,6 +40,7 @@ func (dto OrganizationUnitArticleDTO) ToOrganizationUnitArticle() *data.Organiza
 		OrganizationUnitID:  dto.OrganizationUnitID,
 		Amount:              dto.Amount,
 		Status:              dto.Status,
+		UsedArticles:        dto.UsedArticles,
 		IsRejected:          dto.IsRejected,
 		RejectedDescription: dto.RejectedDescription,
 	}
@@ -49,6 +52,7 @@ func ToOrganizationUnitArticleResponseDTO(data data.OrganizationUnitArticle) Org
 		ArticleID:           data.ArticleID,
 		OrganizationUnitID:  data.OrganizationUnitID,
 		Amount:              data.Amount,
+		UsedArticles:        data.UsedArticles,
 		Status:              data.Status,
 		IsRejected:          data.IsRejected,
 		RejectedDescription: data.RejectedDescription,
