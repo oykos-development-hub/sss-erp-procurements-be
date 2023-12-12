@@ -1,6 +1,9 @@
 package services
 
 import (
+	"strconv"
+	"time"
+
 	"gitlab.sudovi.me/erp/procurements-api/data"
 	"gitlab.sudovi.me/erp/procurements-api/dto"
 	"gitlab.sudovi.me/erp/procurements-api/errors"
@@ -89,6 +92,16 @@ func (h *ContractServiceImpl) GetContractList(input dto.GetContractsInputDTO) ([
 	if input.SupplierID != nil {
 		cond["supplier_id"] = input.SupplierID
 	}
+	if input.Year != nil {
+		year := *input.Year
+		yearInt, _ := strconv.Atoi(year)
+		start := time.Date(yearInt, time.January, 1, 0, 0, 0, 0, time.UTC)
+		end := time.Date(yearInt, time.December, 31, 23, 59, 59, 999999999, time.UTC)
+
+		cond["date_of_signing <="] = end
+		cond["date_of_signing >="] = start
+	}
+
 	if input.SortByDateOfExpiry != nil {
 		if *input.SortByDateOfExpiry == "asc" {
 			orders = append(orders, "-date_of_expiry")
