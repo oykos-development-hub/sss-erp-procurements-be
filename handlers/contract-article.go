@@ -233,13 +233,6 @@ func (h *contractArticleHandlerImpl) ReadTemplate(w http.ResponseWriter, r *http
 			}
 
 			cols := rows.Columns()
-			if err != nil {
-				response := dto.ArticleResponse{
-					Status: "failed",
-				}
-				_ = h.App.WriteDataResponse(w, http.StatusBadRequest, "Error during reading column value", response)
-				return
-			}
 
 			var article dto.ContractArticleResponseDTO
 			var title, description string
