@@ -13,7 +13,8 @@ type Handlers struct {
 	OrganizationUnitPlanLimitHandler OrganizationUnitPlanLimitHandler
 	ContractArticleHandler           ContractArticleHandler
 	ContractArticleOverageHandler    ContractArticleOverageHandler
-}
+	LogHandler LogHandler
+	}
 
 type PlanHandler interface {
 	CreatePlan(w http.ResponseWriter, r *http.Request)
@@ -78,4 +79,12 @@ type ContractArticleOverageHandler interface {
 	DeleteContractArticleOverage(w http.ResponseWriter, r *http.Request)
 	GetContractArticleOverageById(w http.ResponseWriter, r *http.Request)
 	GetContractArticleOverageList(w http.ResponseWriter, r *http.Request)
+}
+
+type LogHandler interface {
+	CreateLog(w http.ResponseWriter, r *http.Request)
+	UpdateLog(w http.ResponseWriter, r *http.Request)
+	DeleteLog(w http.ResponseWriter, r *http.Request)
+	GetLogById(w http.ResponseWriter, r *http.Request)
+	GetLogList(w http.ResponseWriter, r *http.Request)
 }

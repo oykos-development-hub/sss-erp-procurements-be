@@ -1,9 +1,11 @@
 package handlers
 
 import (
+	"context"
 	"net/http"
 	"strconv"
 
+	"gitlab.sudovi.me/erp/procurements-api/contextutil"
 	"gitlab.sudovi.me/erp/procurements-api/dto"
 	"gitlab.sudovi.me/erp/procurements-api/errors"
 	"gitlab.sudovi.me/erp/procurements-api/services"
@@ -40,7 +42,19 @@ func (h *planHandlerImpl) CreatePlan(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	res, err := h.service.CreatePlan(input)
+	userIDString := r.Header.Get("UserID")
+
+	userID, err := strconv.Atoi(userIDString)
+
+	if err != nil {
+		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(errors.ErrUnauthorized), errors.ErrBadRequest)
+		return
+	}
+
+	ctx := context.Background()
+	ctx = contextutil.SetUserIDInContext(ctx, userID)
+
+	res, err := h.service.CreatePlan(ctx, input)
 	if err != nil {
 		h.App.ErrorLog.Printf("Error creating plan: %v", err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
@@ -66,7 +80,19 @@ func (h *planHandlerImpl) UpdatePlan(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	res, err := h.service.UpdatePlan(id, input)
+	userIDString := r.Header.Get("UserID")
+
+	userID, err := strconv.Atoi(userIDString)
+
+	if err != nil {
+		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(errors.ErrUnauthorized), errors.ErrBadRequest)
+		return
+	}
+
+	ctx := context.Background()
+	ctx = contextutil.SetUserIDInContext(ctx, userID)
+
+	res, err := h.service.UpdatePlan(ctx, id, input)
 	if err != nil {
 		h.App.ErrorLog.Printf("Error updating plan: %v", err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
@@ -79,7 +105,19 @@ func (h *planHandlerImpl) UpdatePlan(w http.ResponseWriter, r *http.Request) {
 func (h *planHandlerImpl) DeletePlan(w http.ResponseWriter, r *http.Request) {
 	id, _ := strconv.Atoi(chi.URLParam(r, "id"))
 
-	err := h.service.DeletePlan(id)
+	userIDString := r.Header.Get("UserID")
+
+	userID, err := strconv.Atoi(userIDString)
+
+	if err != nil {
+		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(errors.ErrUnauthorized), errors.ErrBadRequest)
+		return
+	}
+
+	ctx := context.Background()
+	ctx = contextutil.SetUserIDInContext(ctx, userID)
+
+	err = h.service.DeletePlan(ctx, id)
 	if err != nil {
 		h.App.ErrorLog.Printf("Error deleting plan: %v", err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)

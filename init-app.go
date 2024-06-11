@@ -53,6 +53,10 @@ func initApplication() *celeritas.Celeritas {
 	ContractArticleOverageService := services.NewContractArticleOverageServiceImpl(cel, models.ContractArticleOverage)
 	ContractArticleOverageHandler := handlers.NewContractArticleOverageHandler(cel, ContractArticleOverageService)
 
+		
+	LogService := services.NewLogServiceImpl(cel, models.Log)
+	LogHandler := handlers.NewLogHandler(cel, LogService)
+
 	myHandlers := &handlers.Handlers{
 		PlanHandler:                      PlanHandler,
 		ItemHandler:                      ItemHandler,
@@ -62,6 +66,7 @@ func initApplication() *celeritas.Celeritas {
 		OrganizationUnitPlanLimitHandler: OrganizationUnitPlanLimitHandler,
 		ContractArticleHandler:           ContractArticleHandler,
 		ContractArticleOverageHandler:    ContractArticleOverageHandler,
+		LogHandler: LogHandler,
 	}
 
 	myMiddleware := &middleware.Middleware{

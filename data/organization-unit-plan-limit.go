@@ -21,9 +21,9 @@ func (t *OrganizationUnitPlanLimit) Table() string {
 	return "organization_unit_plan_limits"
 }
 
-// GetAll gets all records from the database, using upper
+// GetAll gets all records from the database, using Upper
 func (t *OrganizationUnitPlanLimit) GetAll(condition *up.Cond) ([]*OrganizationUnitPlanLimit, error) {
-	collection := upper.Collection(t.Table())
+	collection := Upper.Collection(t.Table())
 	var all []*OrganizationUnitPlanLimit
 	var res up.Result
 
@@ -41,10 +41,10 @@ func (t *OrganizationUnitPlanLimit) GetAll(condition *up.Cond) ([]*OrganizationU
 	return all, err
 }
 
-// Get gets one record from the database, by id, using upper
+// Get gets one record from the database, by id, using Upper
 func (t *OrganizationUnitPlanLimit) Get(id int) (*OrganizationUnitPlanLimit, error) {
 	var one OrganizationUnitPlanLimit
-	collection := upper.Collection(t.Table())
+	collection := Upper.Collection(t.Table())
 
 	res := collection.Find(up.Cond{"id": id})
 	err := res.One(&one)
@@ -54,10 +54,10 @@ func (t *OrganizationUnitPlanLimit) Get(id int) (*OrganizationUnitPlanLimit, err
 	return &one, nil
 }
 
-// Update updates a record in the database, using upper
+// Update updates a record in the database, using Upper
 func (t *OrganizationUnitPlanLimit) Update(m OrganizationUnitPlanLimit) error {
 	m.UpdatedAt = time.Now()
-	collection := upper.Collection(t.Table())
+	collection := Upper.Collection(t.Table())
 	res := collection.Find(m.ID)
 	err := res.Update(&m)
 	if err != nil {
@@ -66,9 +66,9 @@ func (t *OrganizationUnitPlanLimit) Update(m OrganizationUnitPlanLimit) error {
 	return nil
 }
 
-// Delete deletes a record from the database by id, using upper
+// Delete deletes a record from the database by id, using Upper
 func (t *OrganizationUnitPlanLimit) Delete(id int) error {
-	collection := upper.Collection(t.Table())
+	collection := Upper.Collection(t.Table())
 	res := collection.Find(id)
 	err := res.Delete()
 	if err != nil {
@@ -77,11 +77,11 @@ func (t *OrganizationUnitPlanLimit) Delete(id int) error {
 	return nil
 }
 
-// Insert inserts a model into the database, using upper
+// Insert inserts a model into the database, using Upper
 func (t *OrganizationUnitPlanLimit) Insert(m OrganizationUnitPlanLimit) (int, error) {
 	m.CreatedAt = time.Now()
 	m.UpdatedAt = time.Now()
-	collection := upper.Collection(t.Table())
+	collection := Upper.Collection(t.Table())
 	res, err := collection.Insert(m)
 	if err != nil {
 		return 0, err

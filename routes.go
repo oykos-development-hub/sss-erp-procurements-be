@@ -74,6 +74,12 @@ func routes(app *celeritas.Celeritas, middleware *middleware.Middleware, handler
 		rt.Get("/contract-article-overages", handlers.ContractArticleOverageHandler.GetContractArticleOverageList)
 		rt.Put("/contract-article-overages/{id}", handlers.ContractArticleOverageHandler.UpdateContractArticleOverage)
 		rt.Delete("/contract-article-overages/{id}", handlers.ContractArticleOverageHandler.DeleteContractArticleOverage)
+	
+		rt.Post("/logs", handlers.LogHandler.CreateLog)
+rt.Get("/logs/{id}", handlers.LogHandler.GetLogById)
+rt.Get("/logs", handlers.LogHandler.GetLogList)
+rt.Put("/logs/{id}", handlers.LogHandler.UpdateLog)
+rt.Delete("/logs/{id}", handlers.LogHandler.DeleteLog)
 	})
 
 	return r

@@ -25,9 +25,9 @@ func (t *OrganizationUnitArticle) Table() string {
 	return "organization_unit_articles"
 }
 
-// GetAll gets all records from the database, using upper
+// GetAll gets all records from the database, using Upper
 func (t *OrganizationUnitArticle) GetAll(condition *up.Cond) ([]*OrganizationUnitArticle, error) {
-	collection := upper.Collection(t.Table())
+	collection := Upper.Collection(t.Table())
 	var all []*OrganizationUnitArticle
 	var res up.Result
 
@@ -45,10 +45,10 @@ func (t *OrganizationUnitArticle) GetAll(condition *up.Cond) ([]*OrganizationUni
 	return all, err
 }
 
-// Get gets one record from the database, by id, using upper
+// Get gets one record from the database, by id, using Upper
 func (t *OrganizationUnitArticle) Get(id int) (*OrganizationUnitArticle, error) {
 	var one OrganizationUnitArticle
-	collection := upper.Collection(t.Table())
+	collection := Upper.Collection(t.Table())
 
 	res := collection.Find(up.Cond{"id": id})
 	err := res.One(&one)
@@ -58,10 +58,10 @@ func (t *OrganizationUnitArticle) Get(id int) (*OrganizationUnitArticle, error) 
 	return &one, nil
 }
 
-// Update updates a record in the database, using upper
+// Update updates a record in the database, using Upper
 func (t *OrganizationUnitArticle) Update(m OrganizationUnitArticle) error {
 	m.UpdatedAt = time.Now()
-	collection := upper.Collection(t.Table())
+	collection := Upper.Collection(t.Table())
 	res := collection.Find(m.ID)
 	err := res.Update(&m)
 	if err != nil {
@@ -70,9 +70,9 @@ func (t *OrganizationUnitArticle) Update(m OrganizationUnitArticle) error {
 	return nil
 }
 
-// Delete deletes a record from the database by id, using upper
+// Delete deletes a record from the database by id, using Upper
 func (t *OrganizationUnitArticle) Delete(id int) error {
-	collection := upper.Collection(t.Table())
+	collection := Upper.Collection(t.Table())
 	res := collection.Find(id)
 	err := res.Delete()
 	if err != nil {
@@ -81,11 +81,11 @@ func (t *OrganizationUnitArticle) Delete(id int) error {
 	return nil
 }
 
-// Insert inserts a model into the database, using upper
+// Insert inserts a model into the database, using Upper
 func (t *OrganizationUnitArticle) Insert(m OrganizationUnitArticle) (int, error) {
 	m.CreatedAt = time.Now()
 	m.UpdatedAt = time.Now()
-	collection := upper.Collection(t.Table())
+	collection := Upper.Collection(t.Table())
 	res, err := collection.Insert(m)
 	if err != nil {
 		return 0, err

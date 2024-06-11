@@ -1,9 +1,11 @@
 package handlers
 
 import (
+	"context"
 	"net/http"
 	"strconv"
 
+	"gitlab.sudovi.me/erp/procurements-api/contextutil"
 	"gitlab.sudovi.me/erp/procurements-api/dto"
 	"gitlab.sudovi.me/erp/procurements-api/errors"
 	"gitlab.sudovi.me/erp/procurements-api/services"
@@ -40,7 +42,19 @@ func (h *contractHandlerImpl) CreateContract(w http.ResponseWriter, r *http.Requ
 		return
 	}
 
-	res, err := h.service.CreateContract(input)
+	userIDString := r.Header.Get("UserID")
+
+	userID, err := strconv.Atoi(userIDString)
+
+	if err != nil {
+		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(errors.ErrUnauthorized), errors.ErrBadRequest)
+		return
+	}
+
+	ctx := context.Background()
+	ctx = contextutil.SetUserIDInContext(ctx, userID)
+
+	res, err := h.service.CreateContract(ctx, input)
 	if err != nil {
 		h.App.ErrorLog.Printf("Error creating contract: %v", err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
@@ -66,7 +80,19 @@ func (h *contractHandlerImpl) UpdateContract(w http.ResponseWriter, r *http.Requ
 		return
 	}
 
-	res, err := h.service.UpdateContract(id, input)
+	userIDString := r.Header.Get("UserID")
+
+	userID, err := strconv.Atoi(userIDString)
+
+	if err != nil {
+		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(errors.ErrUnauthorized), errors.ErrBadRequest)
+		return
+	}
+
+	ctx := context.Background()
+	ctx = contextutil.SetUserIDInContext(ctx, userID)
+
+	res, err := h.service.UpdateContract(ctx, id, input)
 	if err != nil {
 		h.App.ErrorLog.Printf("Error updating contract with ID %d: %v", id, err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
@@ -79,7 +105,19 @@ func (h *contractHandlerImpl) UpdateContract(w http.ResponseWriter, r *http.Requ
 func (h *contractHandlerImpl) DeleteContract(w http.ResponseWriter, r *http.Request) {
 	id, _ := strconv.Atoi(chi.URLParam(r, "id"))
 
-	err := h.service.DeleteContract(id)
+	userIDString := r.Header.Get("UserID")
+
+	userID, err := strconv.Atoi(userIDString)
+
+	if err != nil {
+		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(errors.ErrUnauthorized), errors.ErrBadRequest)
+		return
+	}
+
+	ctx := context.Background()
+	ctx = contextutil.SetUserIDInContext(ctx, userID)
+
+	err = h.service.DeleteContract(ctx, id)
 	if err != nil {
 		h.App.ErrorLog.Printf("Error deleting contract with ID %d: %v", id, err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)

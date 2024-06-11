@@ -1,6 +1,8 @@
 package services
 
 import (
+	"context"
+
 	"gitlab.sudovi.me/erp/procurements-api/data"
 	"gitlab.sudovi.me/erp/procurements-api/dto"
 	"gitlab.sudovi.me/erp/procurements-api/errors"
@@ -21,10 +23,10 @@ func NewPlanServiceImpl(app *celeritas.Celeritas, repo data.Plan) PlanService {
 	}
 }
 
-func (h *PlanServiceImpl) CreatePlan(input dto.PlanDTO) (*dto.PlanResponseDTO, error) {
+func (h *PlanServiceImpl) CreatePlan(ctx context.Context, input dto.PlanDTO) (*dto.PlanResponseDTO, error) {
 	data := input.ToPlan()
 
-	id, err := h.repo.Insert(*data)
+	id, err := h.repo.Insert(ctx, *data)
 	if err != nil {
 		return nil, errors.ErrInternalServer
 	}
@@ -39,11 +41,11 @@ func (h *PlanServiceImpl) CreatePlan(input dto.PlanDTO) (*dto.PlanResponseDTO, e
 	return &res, nil
 }
 
-func (h *PlanServiceImpl) UpdatePlan(id int, input dto.PlanDTO) (*dto.PlanResponseDTO, error) {
+func (h *PlanServiceImpl) UpdatePlan(ctx context.Context, id int, input dto.PlanDTO) (*dto.PlanResponseDTO, error) {
 	data := input.ToPlan()
 	data.ID = id
 
-	err := h.repo.Update(*data)
+	err := h.repo.Update(ctx, *data)
 	if err != nil {
 		return nil, errors.ErrInternalServer
 	}
@@ -58,8 +60,8 @@ func (h *PlanServiceImpl) UpdatePlan(id int, input dto.PlanDTO) (*dto.PlanRespon
 	return &response, nil
 }
 
-func (h *PlanServiceImpl) DeletePlan(id int) error {
-	err := h.repo.Delete(id)
+func (h *PlanServiceImpl) DeletePlan(ctx context.Context, id int) error {
+	err := h.repo.Delete(ctx, id)
 	if err != nil {
 		h.App.ErrorLog.Println(err)
 		return errors.ErrInternalServer

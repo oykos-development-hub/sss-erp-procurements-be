@@ -1,6 +1,7 @@
 package services
 
 import (
+	"context"
 	"strconv"
 	"time"
 
@@ -24,10 +25,10 @@ func NewContractServiceImpl(app *celeritas.Celeritas, repo data.Contract) Contra
 	}
 }
 
-func (h *ContractServiceImpl) CreateContract(input dto.ContractDTO) (*dto.ContractResponseDTO, error) {
+func (h *ContractServiceImpl) CreateContract(ctx context.Context, input dto.ContractDTO) (*dto.ContractResponseDTO, error) {
 	data := input.ToContract()
 
-	id, err := h.repo.Insert(*data)
+	id, err := h.repo.Insert(ctx, *data)
 	if err != nil {
 		return nil, errors.ErrInternalServer
 	}
@@ -42,11 +43,11 @@ func (h *ContractServiceImpl) CreateContract(input dto.ContractDTO) (*dto.Contra
 	return &res, nil
 }
 
-func (h *ContractServiceImpl) UpdateContract(id int, input dto.ContractDTO) (*dto.ContractResponseDTO, error) {
+func (h *ContractServiceImpl) UpdateContract(ctx context.Context, id int, input dto.ContractDTO) (*dto.ContractResponseDTO, error) {
 	data := input.ToContract()
 	data.ID = id
 
-	err := h.repo.Update(*data)
+	err := h.repo.Update(ctx, *data)
 	if err != nil {
 		return nil, errors.ErrInternalServer
 	}
@@ -61,8 +62,8 @@ func (h *ContractServiceImpl) UpdateContract(id int, input dto.ContractDTO) (*dt
 	return &response, nil
 }
 
-func (h *ContractServiceImpl) DeleteContract(id int) error {
-	err := h.repo.Delete(id)
+func (h *ContractServiceImpl) DeleteContract(ctx context.Context, id int) error {
+	err := h.repo.Delete(ctx, id)
 	if err != nil {
 		h.App.ErrorLog.Println(err)
 		return errors.ErrInternalServer

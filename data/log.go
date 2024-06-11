@@ -1,42 +1,62 @@
 package data
 
 import (
+	"encoding/json"
 	"time"
 
 	up "github.com/upper/db/v4"
 )
 
-// Contract article struct
-type ContractArticle struct {
-	ID         int       `db:"id,omitempty"`
-	ArticleID  int       `db:"article_id"`
-	ContractID int       `db:"contract_id"`
-	NetValue   *int      `db:"net_value"`
-	GrossValue *int      `db:"gross_value"`
-	CreatedAt  time.Time `db:"created_at,omitempty"`
-	UpdatedAt  time.Time `db:"updated_at"`
+type LogOperation string
+type LogEntity string
+
+var (
+	OperationInsert LogOperation = "INSERT"
+	OperationUpdate LogOperation = "UPDATE"
+	OperationDelete LogOperation = "DELETE"
+)
+
+var (
+	EntityOrganzationUnit LogEntity = "plans"
+	EntityJobPositions    LogEntity = "items"
+	EntityUserProfiles    LogEntity = "contracts"
+)
+
+// Log struct
+type Log struct {
+	ID        int             `db:"id,omitempty"`
+	ChangedAt time.Time       `db:"changed_at"`
+	UserID    int             `db:"user_id"`
+	ItemID    int             `db:"item_id"`
+	Operation LogOperation    `db:"operation"`
+	Entity    LogEntity       `db:"entity"`
+	OldState  json.RawMessage `db:"old_state"`
+	NewState  json.RawMessage `db:"new_state"`
 }
 
 // Table returns the table name
-func (t *ContractArticle) Table() string {
-	return "contract_articles"
+func (t *Log) Table() string {
+	return "logs"
 }
 
 // GetAll gets all records from the database, using Upper
-func (t *ContractArticle) GetAll(condition *up.Cond, orders []interface{}) ([]*ContractArticle, *uint64, error) {
+func (t *Log) GetAll(page *int, size *int, condition *up.AndExpr, orders []interface{}) ([]*Log, *uint64, error) {
 	collection := Upper.Collection(t.Table())
-	var all []*ContractArticle
+	var all []*Log
 	var res up.Result
 
 	if condition != nil {
-		res = collection.Find(*condition)
+		res = collection.Find(condition)
 	} else {
 		res = collection.Find()
 	}
-
 	total, err := res.Count()
 	if err != nil {
 		return nil, nil, err
+	}
+
+	if page != nil && size != nil {
+		res = paginateResult(res, *page, *size)
 	}
 
 	err = res.OrderBy(orders...).All(&all)
@@ -48,8 +68,8 @@ func (t *ContractArticle) GetAll(condition *up.Cond, orders []interface{}) ([]*C
 }
 
 // Get gets one record from the database, by id, using Upper
-func (t *ContractArticle) Get(id int) (*ContractArticle, error) {
-	var one ContractArticle
+func (t *Log) Get(id int) (*Log, error) {
+	var one Log
 	collection := Upper.Collection(t.Table())
 
 	res := collection.Find(up.Cond{"id": id})
@@ -61,8 +81,7 @@ func (t *ContractArticle) Get(id int) (*ContractArticle, error) {
 }
 
 // Update updates a record in the database, using Upper
-func (t *ContractArticle) Update(m ContractArticle) error {
-	m.UpdatedAt = time.Now()
+func (t *Log) Update(m Log) error {
 	collection := Upper.Collection(t.Table())
 	res := collection.Find(m.ID)
 	err := res.Update(&m)
@@ -73,7 +92,7 @@ func (t *ContractArticle) Update(m ContractArticle) error {
 }
 
 // Delete deletes a record from the database by id, using Upper
-func (t *ContractArticle) Delete(id int) error {
+func (t *Log) Delete(id int) error {
 	collection := Upper.Collection(t.Table())
 	res := collection.Find(id)
 	err := res.Delete()
@@ -84,9 +103,7 @@ func (t *ContractArticle) Delete(id int) error {
 }
 
 // Insert inserts a model into the database, using Upper
-func (t *ContractArticle) Insert(m ContractArticle) (int, error) {
-	m.CreatedAt = time.Now()
-	m.UpdatedAt = time.Now()
+func (t *Log) Insert(m Log) (int, error) {
 	collection := Upper.Collection(t.Table())
 	res, err := collection.Insert(m)
 	if err != nil {
