@@ -33,6 +33,7 @@ type LogFilterDTO struct {
 	Size        *int    `json:"size"`
 	SortByTitle *string `json:"sort_by_title"`
 	Entity      *string `json:"entity"`
+	Search      *string `json:"search"`
 	UserID      *int    `json:"user_id"`
 	ItemID      *int    `json:"item_id"`
 	Operation   *string `json:"operation"`
