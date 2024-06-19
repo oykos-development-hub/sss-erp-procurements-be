@@ -3,7 +3,7 @@ package services
 import (
 	"gitlab.sudovi.me/erp/procurements-api/data"
 	"gitlab.sudovi.me/erp/procurements-api/dto"
-	"gitlab.sudovi.me/erp/procurements-api/errors"
+	newErrors "gitlab.sudovi.me/erp/procurements-api/pkg/errors"
 
 	"github.com/oykos-development-hub/celeritas"
 	up "github.com/upper/db/v4"
@@ -26,12 +26,12 @@ func (h *OrganizationUnitPlanLimitServiceImpl) CreateOrganizationUnitPlanLimit(i
 
 	id, err := h.repo.Insert(*data)
 	if err != nil {
-		return nil, errors.ErrInternalServer
+		return nil, newErrors.Wrap(err, "repo organization unit plan limit insert")
 	}
 
 	data, err = data.Get(id)
 	if err != nil {
-		return nil, errors.ErrInternalServer
+		return nil, newErrors.Wrap(err, "repo organization unit plan limit get")
 	}
 
 	res := dto.ToOrganizationUnitPlanLimitResponseDTO(*data)
@@ -45,12 +45,12 @@ func (h *OrganizationUnitPlanLimitServiceImpl) UpdateOrganizationUnitPlanLimit(i
 
 	err := h.repo.Update(*data)
 	if err != nil {
-		return nil, errors.ErrInternalServer
+		return nil, newErrors.Wrap(err, "repo organization unit plan limit update")
 	}
 
 	data, err = h.repo.Get(id)
 	if err != nil {
-		return nil, errors.ErrInternalServer
+		return nil, newErrors.Wrap(err, "repo organization unit plan limit get")
 	}
 
 	response := dto.ToOrganizationUnitPlanLimitResponseDTO(*data)
@@ -61,8 +61,7 @@ func (h *OrganizationUnitPlanLimitServiceImpl) UpdateOrganizationUnitPlanLimit(i
 func (h *OrganizationUnitPlanLimitServiceImpl) DeleteOrganizationUnitPlanLimit(id int) error {
 	err := h.repo.Delete(id)
 	if err != nil {
-		h.App.ErrorLog.Println(err)
-		return errors.ErrInternalServer
+		return newErrors.Wrap(err, "repo organization unit plan limit delete")
 	}
 
 	return nil
@@ -71,8 +70,7 @@ func (h *OrganizationUnitPlanLimitServiceImpl) DeleteOrganizationUnitPlanLimit(i
 func (h *OrganizationUnitPlanLimitServiceImpl) GetOrganizationUnitPlanLimit(id int) (*dto.OrganizationUnitPlanLimitResponseDTO, error) {
 	data, err := h.repo.Get(id)
 	if err != nil {
-		h.App.ErrorLog.Println(err)
-		return nil, errors.ErrNotFound
+		return nil, newErrors.Wrap(err, "repo organization unit plan limit get")
 	}
 	response := dto.ToOrganizationUnitPlanLimitResponseDTO(*data)
 
@@ -88,8 +86,7 @@ func (h *OrganizationUnitPlanLimitServiceImpl) GetOrganizationUnitPlanLimitList(
 
 	data, err := h.repo.GetAll(&cond)
 	if err != nil {
-		h.App.ErrorLog.Println(err)
-		return nil, errors.ErrInternalServer
+		return nil, newErrors.Wrap(err, "repo organization unit plan limit get all")
 	}
 	response := dto.ToOrganizationUnitPlanLimitListResponseDTO(data)
 

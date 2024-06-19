@@ -30,19 +30,21 @@ func (h *organizationunitarticleHandlerImpl) CreateOrganizationUnitArticle(w htt
 	var input dto.OrganizationUnitArticleDTO
 	err := h.App.ReadJSON(w, r, &input)
 	if err != nil {
+		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, http.StatusBadRequest, err)
 		return
 	}
 
 	validator := h.App.Validator().ValidateStruct(&input)
 	if !validator.Valid() {
+		h.App.ErrorLog.Print(validator.Errors)
 		_ = h.App.WriteErrorResponseWithData(w, errors.MapErrorToStatusCode(errors.ErrBadRequest), errors.ErrBadRequest, validator.Errors)
 		return
 	}
 
 	res, err := h.service.CreateOrganizationUnitArticle(input)
 	if err != nil {
-		h.App.ErrorLog.Printf("Error creating organization unit article: %v", err)
+		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
 	}
@@ -56,19 +58,21 @@ func (h *organizationunitarticleHandlerImpl) UpdateOrganizationUnitArticle(w htt
 	var input dto.OrganizationUnitArticleDTO
 	err := h.App.ReadJSON(w, r, &input)
 	if err != nil {
+		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, http.StatusBadRequest, err)
 		return
 	}
 
 	validator := h.App.Validator().ValidateStruct(&input)
 	if !validator.Valid() {
+		h.App.ErrorLog.Print(validator.Errors)
 		_ = h.App.WriteErrorResponseWithData(w, errors.MapErrorToStatusCode(errors.ErrBadRequest), errors.ErrBadRequest, validator.Errors)
 		return
 	}
 
 	res, err := h.service.UpdateOrganizationUnitArticle(id, input)
 	if err != nil {
-		h.App.ErrorLog.Printf("Error updating organization unit article with ID %d: %v", id, err)
+		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
 	}
@@ -81,7 +85,7 @@ func (h *organizationunitarticleHandlerImpl) DeleteOrganizationUnitArticle(w htt
 
 	err := h.service.DeleteOrganizationUnitArticle(id)
 	if err != nil {
-		h.App.ErrorLog.Printf("Error deleting organization unit article with ID %d: %v", id, err)
+		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
 	}
@@ -94,7 +98,7 @@ func (h *organizationunitarticleHandlerImpl) GetOrganizationUnitArticleById(w ht
 
 	res, err := h.service.GetOrganizationUnitArticle(id)
 	if err != nil {
-		h.App.ErrorLog.Printf("Error fetching organization unit article with ID %d: %v", id, err)
+		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
 	}
@@ -106,19 +110,21 @@ func (h *organizationunitarticleHandlerImpl) GetOrganizationUnitArticleList(w ht
 	var input dto.GetOrganizationUnitArticleListInputDTO
 	err := h.App.ReadJSON(w, r, &input)
 	if err != nil {
+		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, http.StatusBadRequest, err)
 		return
 	}
 
 	validator := h.App.Validator().ValidateStruct(&input)
 	if !validator.Valid() {
+		h.App.ErrorLog.Print(validator.Errors)
 		_ = h.App.WriteErrorResponseWithData(w, errors.MapErrorToStatusCode(errors.ErrBadRequest), errors.ErrBadRequest, validator.Errors)
 		return
 	}
 
 	res, err := h.service.GetOrganizationUnitArticleList(input)
 	if err != nil {
-		h.App.ErrorLog.Printf("Error fetching organization unit article list: %v", err)
+		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
 	}

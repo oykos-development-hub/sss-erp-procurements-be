@@ -7,7 +7,7 @@ import (
 
 	"gitlab.sudovi.me/erp/procurements-api/data"
 	"gitlab.sudovi.me/erp/procurements-api/dto"
-	"gitlab.sudovi.me/erp/procurements-api/errors"
+	newErrors "gitlab.sudovi.me/erp/procurements-api/pkg/errors"
 
 	"github.com/oykos-development-hub/celeritas"
 	up "github.com/upper/db/v4"
@@ -30,12 +30,12 @@ func (h *ContractServiceImpl) CreateContract(ctx context.Context, input dto.Cont
 
 	id, err := h.repo.Insert(ctx, *data)
 	if err != nil {
-		return nil, errors.ErrInternalServer
+		return nil, newErrors.Wrap(err, "repo contract insert")
 	}
 
 	data, err = data.Get(id)
 	if err != nil {
-		return nil, errors.ErrInternalServer
+		return nil, newErrors.Wrap(err, "repo contract get")
 	}
 
 	res := dto.ToContractResponseDTO(*data)
@@ -49,12 +49,12 @@ func (h *ContractServiceImpl) UpdateContract(ctx context.Context, id int, input 
 
 	err := h.repo.Update(ctx, *data)
 	if err != nil {
-		return nil, errors.ErrInternalServer
+		return nil, newErrors.Wrap(err, "repo contract update")
 	}
 
 	data, err = h.repo.Get(id)
 	if err != nil {
-		return nil, errors.ErrInternalServer
+		return nil, newErrors.Wrap(err, "repo contract get")
 	}
 
 	response := dto.ToContractResponseDTO(*data)
@@ -65,8 +65,7 @@ func (h *ContractServiceImpl) UpdateContract(ctx context.Context, id int, input 
 func (h *ContractServiceImpl) DeleteContract(ctx context.Context, id int) error {
 	err := h.repo.Delete(ctx, id)
 	if err != nil {
-		h.App.ErrorLog.Println(err)
-		return errors.ErrInternalServer
+		return newErrors.Wrap(err, "repo contract delete")
 	}
 
 	return nil
@@ -75,8 +74,7 @@ func (h *ContractServiceImpl) DeleteContract(ctx context.Context, id int) error 
 func (h *ContractServiceImpl) GetContract(id int) (*dto.ContractResponseDTO, error) {
 	data, err := h.repo.Get(id)
 	if err != nil {
-		h.App.ErrorLog.Println(err)
-		return nil, errors.ErrNotFound
+		return nil, newErrors.Wrap(err, "repo contract get")
 	}
 	response := dto.ToContractResponseDTO(*data)
 
@@ -147,8 +145,7 @@ func (h *ContractServiceImpl) GetContractList(input dto.GetContractsInputDTO) ([
 
 	res, total, err := h.repo.GetAll(input.Page, input.Size, &cond, orders)
 	if err != nil {
-		h.App.ErrorLog.Println(err)
-		return nil, nil, errors.ErrInternalServer
+		return nil, nil, newErrors.Wrap(err, "repo contract get all")
 	}
 	response := dto.ToContractListResponseDTO(res)
 

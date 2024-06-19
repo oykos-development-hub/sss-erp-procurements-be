@@ -5,7 +5,7 @@ import (
 
 	"gitlab.sudovi.me/erp/procurements-api/data"
 	"gitlab.sudovi.me/erp/procurements-api/dto"
-	"gitlab.sudovi.me/erp/procurements-api/errors"
+	newErrors "gitlab.sudovi.me/erp/procurements-api/pkg/errors"
 
 	"github.com/oykos-development-hub/celeritas"
 	up "github.com/upper/db/v4"
@@ -28,12 +28,12 @@ func (h *PlanServiceImpl) CreatePlan(ctx context.Context, input dto.PlanDTO) (*d
 
 	id, err := h.repo.Insert(ctx, *data)
 	if err != nil {
-		return nil, errors.ErrInternalServer
+		return nil, newErrors.Wrap(err, "repo plan insert")
 	}
 
 	data, err = data.Get(id)
 	if err != nil {
-		return nil, errors.ErrInternalServer
+		return nil, newErrors.Wrap(err, "repo plan get")
 	}
 
 	res := dto.ToPlanResponseDTO(*data)
@@ -47,12 +47,12 @@ func (h *PlanServiceImpl) UpdatePlan(ctx context.Context, id int, input dto.Plan
 
 	err := h.repo.Update(ctx, *data)
 	if err != nil {
-		return nil, errors.ErrInternalServer
+		return nil, newErrors.Wrap(err, "repo plan update")
 	}
 
 	data, err = h.repo.Get(id)
 	if err != nil {
-		return nil, errors.ErrInternalServer
+		return nil, newErrors.Wrap(err, "repo plan get")
 	}
 
 	response := dto.ToPlanResponseDTO(*data)
@@ -63,8 +63,7 @@ func (h *PlanServiceImpl) UpdatePlan(ctx context.Context, id int, input dto.Plan
 func (h *PlanServiceImpl) DeletePlan(ctx context.Context, id int) error {
 	err := h.repo.Delete(ctx, id)
 	if err != nil {
-		h.App.ErrorLog.Println(err)
-		return errors.ErrInternalServer
+		return newErrors.Wrap(err, "repo plan delete")
 	}
 
 	return nil
@@ -73,8 +72,7 @@ func (h *PlanServiceImpl) DeletePlan(ctx context.Context, id int) error {
 func (h *PlanServiceImpl) GetPlan(id int) (*dto.PlanResponseDTO, error) {
 	data, err := h.repo.Get(id)
 	if err != nil {
-		h.App.ErrorLog.Println(err)
-		return nil, errors.ErrNotFound
+		return nil, newErrors.Wrap(err, "repo plan get")
 	}
 	response := dto.ToPlanResponseDTO(*data)
 
@@ -127,8 +125,7 @@ func (h *PlanServiceImpl) GetPlanList(input dto.GetPlansInputDTO) ([]dto.PlanRes
 
 	res, total, err := h.repo.GetAll(input.Page, input.Size, &cond, orders)
 	if err != nil {
-		h.App.ErrorLog.Println(err)
-		return nil, nil, errors.ErrInternalServer
+		return nil, nil, newErrors.Wrap(err, "repo plan get all")
 	}
 	response := dto.ToPlanListResponseDTO(res)
 

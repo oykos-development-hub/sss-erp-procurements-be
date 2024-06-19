@@ -3,7 +3,7 @@ package services
 import (
 	"gitlab.sudovi.me/erp/procurements-api/data"
 	"gitlab.sudovi.me/erp/procurements-api/dto"
-	"gitlab.sudovi.me/erp/procurements-api/errors"
+	newErrors "gitlab.sudovi.me/erp/procurements-api/pkg/errors"
 
 	"github.com/oykos-development-hub/celeritas"
 	up "github.com/upper/db/v4"
@@ -26,12 +26,12 @@ func (h *ContractArticleOverageServiceImpl) CreateContractArticleOverage(input d
 
 	id, err := h.repo.Insert(*data)
 	if err != nil {
-		return nil, errors.ErrInternalServer
+		return nil, newErrors.Wrap(err, "repo contract article overage insert")
 	}
 
 	data, err = data.Get(id)
 	if err != nil {
-		return nil, errors.ErrInternalServer
+		return nil, newErrors.Wrap(err, "repo contract article overage get")
 	}
 
 	res := dto.ToContractArticleOverageResponseDTO(*data)
@@ -45,12 +45,12 @@ func (h *ContractArticleOverageServiceImpl) UpdateContractArticleOverage(id int,
 
 	err := h.repo.Update(*data)
 	if err != nil {
-		return nil, errors.ErrInternalServer
+		return nil, newErrors.Wrap(err, "repo contract article overage update")
 	}
 
 	data, err = h.repo.Get(id)
 	if err != nil {
-		return nil, errors.ErrInternalServer
+		return nil, newErrors.Wrap(err, "repo contract article overage get")
 	}
 
 	response := dto.ToContractArticleOverageResponseDTO(*data)
@@ -61,8 +61,7 @@ func (h *ContractArticleOverageServiceImpl) UpdateContractArticleOverage(id int,
 func (h *ContractArticleOverageServiceImpl) DeleteContractArticleOverage(id int) error {
 	err := h.repo.Delete(id)
 	if err != nil {
-		h.App.ErrorLog.Println(err)
-		return errors.ErrInternalServer
+		return newErrors.Wrap(err, "repo contract article overage delete")
 	}
 
 	return nil
@@ -71,8 +70,7 @@ func (h *ContractArticleOverageServiceImpl) DeleteContractArticleOverage(id int)
 func (h *ContractArticleOverageServiceImpl) GetContractArticleOverage(id int) (*dto.ContractArticleOverageResponseDTO, error) {
 	data, err := h.repo.Get(id)
 	if err != nil {
-		h.App.ErrorLog.Println(err)
-		return nil, errors.ErrNotFound
+		return nil, newErrors.Wrap(err, "repo contract article overage get")
 	}
 	response := dto.ToContractArticleOverageResponseDTO(*data)
 
@@ -92,8 +90,7 @@ func (h *ContractArticleOverageServiceImpl) GetContractArticleOverageList(input 
 
 	data, err := h.repo.GetAll(&cond)
 	if err != nil {
-		h.App.ErrorLog.Println(err)
-		return nil, errors.ErrInternalServer
+		return nil, newErrors.Wrap(err, "repo contract article overage get all")
 	}
 	response := dto.ToContractArticleOverageListResponseDTO(data)
 

@@ -30,18 +30,21 @@ func (h *contractarticleoverageHandlerImpl) CreateContractArticleOverage(w http.
 	var input dto.ContractArticleOverageDTO
 	err := h.App.ReadJSON(w, r, &input)
 	if err != nil {
+		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, http.StatusBadRequest, err)
 		return
 	}
 
 	validator := h.App.Validator().ValidateStruct(&input)
 	if !validator.Valid() {
+		h.App.ErrorLog.Print(validator.Errors)
 		_ = h.App.WriteErrorResponseWithData(w, errors.MapErrorToStatusCode(errors.ErrBadRequest), errors.ErrBadRequest, validator.Errors)
 		return
 	}
 
 	res, err := h.service.CreateContractArticleOverage(input)
 	if err != nil {
+		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
 	}
@@ -55,18 +58,21 @@ func (h *contractarticleoverageHandlerImpl) UpdateContractArticleOverage(w http.
 	var input dto.ContractArticleOverageDTO
 	err := h.App.ReadJSON(w, r, &input)
 	if err != nil {
+		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, http.StatusBadRequest, err)
 		return
 	}
 
 	validator := h.App.Validator().ValidateStruct(&input)
 	if !validator.Valid() {
+		h.App.ErrorLog.Print(validator.Errors)
 		_ = h.App.WriteErrorResponseWithData(w, errors.MapErrorToStatusCode(errors.ErrBadRequest), errors.ErrBadRequest, validator.Errors)
 		return
 	}
 
 	res, err := h.service.UpdateContractArticleOverage(id, input)
 	if err != nil {
+		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
 	}
@@ -79,6 +85,7 @@ func (h *contractarticleoverageHandlerImpl) DeleteContractArticleOverage(w http.
 
 	err := h.service.DeleteContractArticleOverage(id)
 	if err != nil {
+		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
 	}
@@ -91,6 +98,7 @@ func (h *contractarticleoverageHandlerImpl) GetContractArticleOverageById(w http
 
 	res, err := h.service.GetContractArticleOverage(id)
 	if err != nil {
+		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
 	}
@@ -102,18 +110,21 @@ func (h *contractarticleoverageHandlerImpl) GetContractArticleOverageList(w http
 	var input dto.GetContractArticleOverageInputDTO
 	err := h.App.ReadJSON(w, r, &input)
 	if err != nil {
+		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, http.StatusBadRequest, err)
 		return
 	}
 
 	validator := h.App.Validator().ValidateStruct(&input)
 	if !validator.Valid() {
+		h.App.ErrorLog.Print(validator.Errors)
 		_ = h.App.WriteErrorResponseWithData(w, errors.MapErrorToStatusCode(errors.ErrBadRequest), errors.ErrBadRequest, validator.Errors)
 		return
 	}
 
 	res, err := h.service.GetContractArticleOverageList(input)
 	if err != nil {
+		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
 	}

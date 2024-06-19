@@ -30,19 +30,21 @@ func (h *articleHandlerImpl) CreateArticle(w http.ResponseWriter, r *http.Reques
 	var input dto.ArticleDTO
 	err := h.App.ReadJSON(w, r, &input)
 	if err != nil {
+		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, http.StatusBadRequest, err)
 		return
 	}
 
 	validator := h.App.Validator().ValidateStruct(&input)
 	if !validator.Valid() {
+		h.App.ErrorLog.Print(validator.Errors)
 		_ = h.App.WriteErrorResponseWithData(w, errors.MapErrorToStatusCode(errors.ErrBadRequest), errors.ErrBadRequest, validator.Errors)
 		return
 	}
 
 	res, err := h.service.CreateArticle(input)
 	if err != nil {
-		h.App.ErrorLog.Printf("Error creating article: %v", err)
+		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
 	}
@@ -56,19 +58,21 @@ func (h *articleHandlerImpl) UpdateArticle(w http.ResponseWriter, r *http.Reques
 	var input dto.ArticleDTO
 	err := h.App.ReadJSON(w, r, &input)
 	if err != nil {
+		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, http.StatusBadRequest, err)
 		return
 	}
 
 	validator := h.App.Validator().ValidateStruct(&input)
 	if !validator.Valid() {
+		h.App.ErrorLog.Print(validator.Errors)
 		_ = h.App.WriteErrorResponseWithData(w, errors.MapErrorToStatusCode(errors.ErrBadRequest), errors.ErrBadRequest, validator.Errors)
 		return
 	}
 
 	res, err := h.service.UpdateArticle(id, input)
 	if err != nil {
-		h.App.ErrorLog.Printf("Error updating article with ID %d: %v", id, err)
+		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
 	}
@@ -81,7 +85,7 @@ func (h *articleHandlerImpl) DeleteArticle(w http.ResponseWriter, r *http.Reques
 
 	err := h.service.DeleteArticle(id)
 	if err != nil {
-		h.App.ErrorLog.Printf("Error deleting article with ID %d: %v", id, err)
+		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
 	}
@@ -94,7 +98,7 @@ func (h *articleHandlerImpl) GetArticleById(w http.ResponseWriter, r *http.Reque
 
 	res, err := h.service.GetArticle(id)
 	if err != nil {
-		h.App.ErrorLog.Printf("Error fetching article with ID %d: %v", id, err)
+		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
 	}
@@ -106,13 +110,14 @@ func (h *articleHandlerImpl) GetArticleList(w http.ResponseWriter, r *http.Reque
 	var input dto.GetArticleListInput
 	err := h.App.ReadJSON(w, r, &input)
 	if err != nil {
+		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, http.StatusBadRequest, err)
 		return
 	}
 
 	res, err := h.service.GetArticleList(&input)
 	if err != nil {
-		h.App.ErrorLog.Printf("Error fetching article list: %v", err)
+		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
 	}

@@ -3,7 +3,7 @@ package services
 import (
 	"gitlab.sudovi.me/erp/procurements-api/data"
 	"gitlab.sudovi.me/erp/procurements-api/dto"
-	"gitlab.sudovi.me/erp/procurements-api/errors"
+	newErrors "gitlab.sudovi.me/erp/procurements-api/pkg/errors"
 
 	"github.com/oykos-development-hub/celeritas"
 	up "github.com/upper/db/v4"
@@ -26,12 +26,12 @@ func (h *ContractArticleServiceImpl) CreateContractArticle(input dto.ContractArt
 
 	id, err := h.repo.Insert(*data)
 	if err != nil {
-		return nil, errors.ErrInternalServer
+		return nil, newErrors.Wrap(err, "repo contract article insert")
 	}
 
 	data, err = data.Get(id)
 	if err != nil {
-		return nil, errors.ErrInternalServer
+		return nil, newErrors.Wrap(err, "repo contract article get")
 	}
 
 	res := dto.ToContractArticleResponseDTO(*data)
@@ -45,12 +45,12 @@ func (h *ContractArticleServiceImpl) UpdateContractArticle(id int, input dto.Con
 
 	err := h.repo.Update(*data)
 	if err != nil {
-		return nil, errors.ErrInternalServer
+		return nil, newErrors.Wrap(err, "repo contract article update")
 	}
 
 	data, err = h.repo.Get(id)
 	if err != nil {
-		return nil, errors.ErrInternalServer
+		return nil, newErrors.Wrap(err, "repo contract article get")
 	}
 
 	response := dto.ToContractArticleResponseDTO(*data)
@@ -61,8 +61,7 @@ func (h *ContractArticleServiceImpl) UpdateContractArticle(id int, input dto.Con
 func (h *ContractArticleServiceImpl) DeleteContractArticle(id int) error {
 	err := h.repo.Delete(id)
 	if err != nil {
-		h.App.ErrorLog.Println(err)
-		return errors.ErrInternalServer
+		return newErrors.Wrap(err, "repo contract article delete")
 	}
 
 	return nil
@@ -71,8 +70,7 @@ func (h *ContractArticleServiceImpl) DeleteContractArticle(id int) error {
 func (h *ContractArticleServiceImpl) GetContractArticle(id int) (*dto.ContractArticleResponseDTO, error) {
 	data, err := h.repo.Get(id)
 	if err != nil {
-		h.App.ErrorLog.Println(err)
-		return nil, errors.ErrNotFound
+		return nil, newErrors.Wrap(err, "repo contract article get")
 	}
 	response := dto.ToContractArticleResponseDTO(*data)
 
@@ -103,8 +101,7 @@ func (h *ContractArticleServiceImpl) GetContractArticleList(input *dto.GetContra
 
 	data, total, err := h.repo.GetAll(&cond, orders)
 	if err != nil {
-		h.App.ErrorLog.Println(err)
-		return nil, nil, errors.ErrInternalServer
+		return nil, nil, newErrors.Wrap(err, "repo contract article get all")
 	}
 	response := dto.ToContractArticleListResponseDTO(data)
 

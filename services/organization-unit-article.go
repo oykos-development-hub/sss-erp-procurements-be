@@ -3,7 +3,7 @@ package services
 import (
 	"gitlab.sudovi.me/erp/procurements-api/data"
 	"gitlab.sudovi.me/erp/procurements-api/dto"
-	"gitlab.sudovi.me/erp/procurements-api/errors"
+	newErrors "gitlab.sudovi.me/erp/procurements-api/pkg/errors"
 
 	"github.com/oykos-development-hub/celeritas"
 	up "github.com/upper/db/v4"
@@ -26,12 +26,12 @@ func (h *OrganizationUnitArticleServiceImpl) CreateOrganizationUnitArticle(input
 
 	id, err := h.repo.Insert(*data)
 	if err != nil {
-		return nil, errors.ErrInternalServer
+		return nil, newErrors.Wrap(err, "repo organization unit article insert")
 	}
 
 	data, err = data.Get(id)
 	if err != nil {
-		return nil, errors.ErrInternalServer
+		return nil, newErrors.Wrap(err, "repo organization unit article get")
 	}
 
 	res := dto.ToOrganizationUnitArticleResponseDTO(*data)
@@ -45,12 +45,12 @@ func (h *OrganizationUnitArticleServiceImpl) UpdateOrganizationUnitArticle(id in
 
 	err := h.repo.Update(*data)
 	if err != nil {
-		return nil, errors.ErrInternalServer
+		return nil, newErrors.Wrap(err, "repo organization unit article update")
 	}
 
 	data, err = h.repo.Get(id)
 	if err != nil {
-		return nil, errors.ErrInternalServer
+		return nil, newErrors.Wrap(err, "repo organization unit article get")
 	}
 
 	response := dto.ToOrganizationUnitArticleResponseDTO(*data)
@@ -61,8 +61,7 @@ func (h *OrganizationUnitArticleServiceImpl) UpdateOrganizationUnitArticle(id in
 func (h *OrganizationUnitArticleServiceImpl) DeleteOrganizationUnitArticle(id int) error {
 	err := h.repo.Delete(id)
 	if err != nil {
-		h.App.ErrorLog.Println(err)
-		return errors.ErrInternalServer
+		return newErrors.Wrap(err, "repo organization unit article delete")
 	}
 
 	return nil
@@ -71,8 +70,7 @@ func (h *OrganizationUnitArticleServiceImpl) DeleteOrganizationUnitArticle(id in
 func (h *OrganizationUnitArticleServiceImpl) GetOrganizationUnitArticle(id int) (*dto.OrganizationUnitArticleResponseDTO, error) {
 	data, err := h.repo.Get(id)
 	if err != nil {
-		h.App.ErrorLog.Println(err)
-		return nil, errors.ErrNotFound
+		return nil, newErrors.Wrap(err, "repo organization unit article get")
 	}
 	response := dto.ToOrganizationUnitArticleResponseDTO(*data)
 
@@ -91,8 +89,7 @@ func (h *OrganizationUnitArticleServiceImpl) GetOrganizationUnitArticleList(inpu
 
 	data, err := h.repo.GetAll(&cond)
 	if err != nil {
-		h.App.ErrorLog.Println(err)
-		return nil, errors.ErrInternalServer
+		return nil, newErrors.Wrap(err, "repo organization unit article get all")
 	}
 	response := dto.ToOrganizationUnitArticleListResponseDTO(data)
 

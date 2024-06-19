@@ -32,12 +32,14 @@ func (h *contractHandlerImpl) CreateContract(w http.ResponseWriter, r *http.Requ
 	var input dto.ContractDTO
 	err := h.App.ReadJSON(w, r, &input)
 	if err != nil {
+		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, http.StatusBadRequest, err)
 		return
 	}
 
 	validator := h.App.Validator().ValidateStruct(&input)
 	if !validator.Valid() {
+		h.App.ErrorLog.Print(validator.Errors)
 		_ = h.App.WriteErrorResponseWithData(w, errors.MapErrorToStatusCode(errors.ErrBadRequest), errors.ErrBadRequest, validator.Errors)
 		return
 	}
@@ -47,7 +49,9 @@ func (h *contractHandlerImpl) CreateContract(w http.ResponseWriter, r *http.Requ
 	userID, err := strconv.Atoi(userIDString)
 
 	if err != nil {
-		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(errors.ErrUnauthorized), errors.ErrBadRequest)
+		h.App.ErrorLog.Print(err)
+		h.App.ErrorLog.Print(err)
+		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(errors.ErrUnauthorized), errors.ErrUnauthorized)
 		return
 	}
 
@@ -56,7 +60,7 @@ func (h *contractHandlerImpl) CreateContract(w http.ResponseWriter, r *http.Requ
 
 	res, err := h.service.CreateContract(ctx, input)
 	if err != nil {
-		h.App.ErrorLog.Printf("Error creating contract: %v", err)
+		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
 	}
@@ -70,12 +74,14 @@ func (h *contractHandlerImpl) UpdateContract(w http.ResponseWriter, r *http.Requ
 	var input dto.ContractDTO
 	err := h.App.ReadJSON(w, r, &input)
 	if err != nil {
+		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, http.StatusBadRequest, err)
 		return
 	}
 
 	validator := h.App.Validator().ValidateStruct(&input)
 	if !validator.Valid() {
+		h.App.ErrorLog.Print(validator.Errors)
 		_ = h.App.WriteErrorResponseWithData(w, errors.MapErrorToStatusCode(errors.ErrBadRequest), errors.ErrBadRequest, validator.Errors)
 		return
 	}
@@ -85,7 +91,9 @@ func (h *contractHandlerImpl) UpdateContract(w http.ResponseWriter, r *http.Requ
 	userID, err := strconv.Atoi(userIDString)
 
 	if err != nil {
-		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(errors.ErrUnauthorized), errors.ErrBadRequest)
+		h.App.ErrorLog.Print(err)
+		h.App.ErrorLog.Print(err)
+		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(errors.ErrUnauthorized), errors.ErrUnauthorized)
 		return
 	}
 
@@ -94,7 +102,7 @@ func (h *contractHandlerImpl) UpdateContract(w http.ResponseWriter, r *http.Requ
 
 	res, err := h.service.UpdateContract(ctx, id, input)
 	if err != nil {
-		h.App.ErrorLog.Printf("Error updating contract with ID %d: %v", id, err)
+		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
 	}
@@ -110,7 +118,8 @@ func (h *contractHandlerImpl) DeleteContract(w http.ResponseWriter, r *http.Requ
 	userID, err := strconv.Atoi(userIDString)
 
 	if err != nil {
-		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(errors.ErrUnauthorized), errors.ErrBadRequest)
+		h.App.ErrorLog.Print(err)
+		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(errors.ErrUnauthorized), errors.ErrUnauthorized)
 		return
 	}
 
@@ -119,7 +128,7 @@ func (h *contractHandlerImpl) DeleteContract(w http.ResponseWriter, r *http.Requ
 
 	err = h.service.DeleteContract(ctx, id)
 	if err != nil {
-		h.App.ErrorLog.Printf("Error deleting contract with ID %d: %v", id, err)
+		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
 	}
@@ -132,7 +141,7 @@ func (h *contractHandlerImpl) GetContractById(w http.ResponseWriter, r *http.Req
 
 	res, err := h.service.GetContract(id)
 	if err != nil {
-		h.App.ErrorLog.Printf("Error fetching contract with ID %d: %v", id, err)
+		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
 	}
@@ -144,19 +153,21 @@ func (h *contractHandlerImpl) GetContractList(w http.ResponseWriter, r *http.Req
 	var input dto.GetContractsInputDTO
 	err := h.App.ReadJSON(w, r, &input)
 	if err != nil {
+		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, http.StatusBadRequest, err)
 		return
 	}
 
 	validator := h.App.Validator().ValidateStruct(&input)
 	if !validator.Valid() {
+		h.App.ErrorLog.Print(validator.Errors)
 		_ = h.App.WriteErrorResponseWithData(w, errors.MapErrorToStatusCode(errors.ErrBadRequest), errors.ErrBadRequest, validator.Errors)
 		return
 	}
 
 	res, total, err := h.service.GetContractList(input)
 	if err != nil {
-		h.App.ErrorLog.Printf("Error fetching contract list: %v", err)
+		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
 	}

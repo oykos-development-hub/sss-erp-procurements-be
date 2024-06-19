@@ -3,7 +3,6 @@ module gitlab.sudovi.me/erp/procurements-api
 go 1.22
 
 require (
-	github.com/360EntSecGroup-Skylar/excelize v1.4.1
 	github.com/go-chi/chi/v5 v5.0.10
 	github.com/lib/pq v1.10.9
 	github.com/oykos-development-hub/celeritas v1.2.8
@@ -61,7 +60,6 @@ require (
 	github.com/justinas/nosurf v1.1.1 // indirect
 	github.com/klauspost/compress v1.17.0 // indirect
 	github.com/leodido/go-urn v1.2.4 // indirect
-	github.com/mohae/deepcopy v0.0.0-20170929034955-c48cc78d4826 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/robfig/cron/v3 v3.0.1 // indirect
 	github.com/segmentio/fasthash v1.0.3 // indirect

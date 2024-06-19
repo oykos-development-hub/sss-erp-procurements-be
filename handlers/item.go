@@ -32,12 +32,14 @@ func (h *itemHandlerImpl) CreateItem(w http.ResponseWriter, r *http.Request) {
 	var input dto.ItemDTO
 	err := h.App.ReadJSON(w, r, &input)
 	if err != nil {
+		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, http.StatusBadRequest, err)
 		return
 	}
 
 	validator := h.App.Validator().ValidateStruct(&input)
 	if !validator.Valid() {
+		h.App.ErrorLog.Print(validator.Errors)
 		_ = h.App.WriteErrorResponseWithData(w, errors.MapErrorToStatusCode(errors.ErrBadRequest), errors.ErrBadRequest, validator.Errors)
 		return
 	}
@@ -47,7 +49,8 @@ func (h *itemHandlerImpl) CreateItem(w http.ResponseWriter, r *http.Request) {
 	userID, err := strconv.Atoi(userIDString)
 
 	if err != nil {
-		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(errors.ErrUnauthorized), errors.ErrBadRequest)
+		h.App.ErrorLog.Print(err)
+		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(errors.ErrUnauthorized), errors.ErrUnauthorized)
 		return
 	}
 
@@ -56,7 +59,7 @@ func (h *itemHandlerImpl) CreateItem(w http.ResponseWriter, r *http.Request) {
 
 	res, err := h.service.CreateItem(ctx, input)
 	if err != nil {
-		h.App.ErrorLog.Printf("Error creating item: %v", err)
+		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
 	}
@@ -70,12 +73,14 @@ func (h *itemHandlerImpl) UpdateItem(w http.ResponseWriter, r *http.Request) {
 	var input dto.ItemDTO
 	err := h.App.ReadJSON(w, r, &input)
 	if err != nil {
+		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, http.StatusBadRequest, err)
 		return
 	}
 
 	validator := h.App.Validator().ValidateStruct(&input)
 	if !validator.Valid() {
+		h.App.ErrorLog.Print(validator.Errors)
 		_ = h.App.WriteErrorResponseWithData(w, errors.MapErrorToStatusCode(errors.ErrBadRequest), errors.ErrBadRequest, validator.Errors)
 		return
 	}
@@ -85,7 +90,8 @@ func (h *itemHandlerImpl) UpdateItem(w http.ResponseWriter, r *http.Request) {
 	userID, err := strconv.Atoi(userIDString)
 
 	if err != nil {
-		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(errors.ErrUnauthorized), errors.ErrBadRequest)
+		h.App.ErrorLog.Print(err)
+		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(errors.ErrUnauthorized), errors.ErrUnauthorized)
 		return
 	}
 
@@ -94,7 +100,7 @@ func (h *itemHandlerImpl) UpdateItem(w http.ResponseWriter, r *http.Request) {
 
 	res, err := h.service.UpdateItem(ctx, id, input)
 	if err != nil {
-		h.App.ErrorLog.Printf("Error updating item with ID %d: %v", id, err)
+		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
 	}
@@ -110,7 +116,8 @@ func (h *itemHandlerImpl) DeleteItem(w http.ResponseWriter, r *http.Request) {
 	userID, err := strconv.Atoi(userIDString)
 
 	if err != nil {
-		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(errors.ErrUnauthorized), errors.ErrBadRequest)
+		h.App.ErrorLog.Print(err)
+		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(errors.ErrUnauthorized), errors.ErrUnauthorized)
 		return
 	}
 
@@ -119,7 +126,7 @@ func (h *itemHandlerImpl) DeleteItem(w http.ResponseWriter, r *http.Request) {
 
 	err = h.service.DeleteItem(ctx, id)
 	if err != nil {
-		h.App.ErrorLog.Printf("Error deleting item with ID %d: %v", id, err)
+		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
 	}
@@ -132,7 +139,7 @@ func (h *itemHandlerImpl) GetItemById(w http.ResponseWriter, r *http.Request) {
 
 	res, err := h.service.GetItem(id)
 	if err != nil {
-		h.App.ErrorLog.Printf("Error fetching item with ID %d: %v", id, err)
+		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
 	}
@@ -144,19 +151,21 @@ func (h *itemHandlerImpl) GetItemList(w http.ResponseWriter, r *http.Request) {
 	var input dto.GetItemsInputDTO
 	err := h.App.ReadJSON(w, r, &input)
 	if err != nil {
+		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, http.StatusBadRequest, err)
 		return
 	}
 
 	validator := h.App.Validator().ValidateStruct(&input)
 	if !validator.Valid() {
+		h.App.ErrorLog.Print(validator.Errors)
 		_ = h.App.WriteErrorResponseWithData(w, errors.MapErrorToStatusCode(errors.ErrBadRequest), errors.ErrBadRequest, validator.Errors)
 		return
 	}
 
 	res, total, err := h.service.GetItemList(input)
 	if err != nil {
-		h.App.ErrorLog.Printf("Error fetching item list: %v", err)
+		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
 	}
