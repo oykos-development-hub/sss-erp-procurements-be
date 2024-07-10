@@ -16,15 +16,17 @@ import (
 
 // PlanHandler is a concrete type that implements PlanHandler
 type planHandlerImpl struct {
-	App     *celeritas.Celeritas
-	service services.PlanService
+	App             *celeritas.Celeritas
+	service         services.PlanService
+	errorLogService services.ErrorLogService
 }
 
 // NewPlanHandler initializes a new PlanHandler with its dependencies
-func NewPlanHandler(app *celeritas.Celeritas, planService services.PlanService) PlanHandler {
+func NewPlanHandler(app *celeritas.Celeritas, planService services.PlanService, errorLogService services.ErrorLogService) PlanHandler {
 	return &planHandlerImpl{
-		App:     app,
-		service: planService,
+		App:             app,
+		service:         planService,
+		errorLogService: errorLogService,
 	}
 }
 
@@ -32,6 +34,7 @@ func (h *planHandlerImpl) CreatePlan(w http.ResponseWriter, r *http.Request) {
 	var input dto.PlanDTO
 	err := h.App.ReadJSON(w, r, &input)
 	if err != nil {
+		h.errorLogService.CreateErrorLog(err)
 		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, http.StatusBadRequest, err)
 		return
@@ -49,6 +52,7 @@ func (h *planHandlerImpl) CreatePlan(w http.ResponseWriter, r *http.Request) {
 	userID, err := strconv.Atoi(userIDString)
 
 	if err != nil {
+		h.errorLogService.CreateErrorLog(err)
 		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(errors.ErrUnauthorized), errors.ErrUnauthorized)
 		return
@@ -59,6 +63,7 @@ func (h *planHandlerImpl) CreatePlan(w http.ResponseWriter, r *http.Request) {
 
 	res, err := h.service.CreatePlan(ctx, input)
 	if err != nil {
+		h.errorLogService.CreateErrorLog(err)
 		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
@@ -73,6 +78,7 @@ func (h *planHandlerImpl) UpdatePlan(w http.ResponseWriter, r *http.Request) {
 	var input dto.PlanDTO
 	err := h.App.ReadJSON(w, r, &input)
 	if err != nil {
+		h.errorLogService.CreateErrorLog(err)
 		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, http.StatusBadRequest, err)
 		return
@@ -90,6 +96,7 @@ func (h *planHandlerImpl) UpdatePlan(w http.ResponseWriter, r *http.Request) {
 	userID, err := strconv.Atoi(userIDString)
 
 	if err != nil {
+		h.errorLogService.CreateErrorLog(err)
 		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(errors.ErrUnauthorized), errors.ErrUnauthorized)
 		return
@@ -100,6 +107,7 @@ func (h *planHandlerImpl) UpdatePlan(w http.ResponseWriter, r *http.Request) {
 
 	res, err := h.service.UpdatePlan(ctx, id, input)
 	if err != nil {
+		h.errorLogService.CreateErrorLog(err)
 		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
@@ -116,6 +124,7 @@ func (h *planHandlerImpl) DeletePlan(w http.ResponseWriter, r *http.Request) {
 	userID, err := strconv.Atoi(userIDString)
 
 	if err != nil {
+		h.errorLogService.CreateErrorLog(err)
 		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(errors.ErrUnauthorized), errors.ErrUnauthorized)
 		return
@@ -126,6 +135,7 @@ func (h *planHandlerImpl) DeletePlan(w http.ResponseWriter, r *http.Request) {
 
 	err = h.service.DeletePlan(ctx, id)
 	if err != nil {
+		h.errorLogService.CreateErrorLog(err)
 		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
@@ -139,6 +149,7 @@ func (h *planHandlerImpl) GetPlanById(w http.ResponseWriter, r *http.Request) {
 
 	res, err := h.service.GetPlan(id)
 	if err != nil {
+		h.errorLogService.CreateErrorLog(err)
 		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
@@ -151,6 +162,7 @@ func (h *planHandlerImpl) GetPlanList(w http.ResponseWriter, r *http.Request) {
 	var input dto.GetPlansInputDTO
 	err := h.App.ReadJSON(w, r, &input)
 	if err != nil {
+		h.errorLogService.CreateErrorLog(err)
 		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, http.StatusBadRequest, err)
 		return
@@ -165,6 +177,7 @@ func (h *planHandlerImpl) GetPlanList(w http.ResponseWriter, r *http.Request) {
 
 	res, total, err := h.service.GetPlanList(input)
 	if err != nil {
+		h.errorLogService.CreateErrorLog(err)
 		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return

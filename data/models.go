@@ -30,7 +30,8 @@ type Models struct {
 	ContractArticle           ContractArticle
 	ContractArticleOverage    ContractArticleOverage
 	Log                       Log
-}
+	ErrorLog ErrorLog
+	}
 
 func New(databasePool *sql.DB) Models {
 	db = databasePool
@@ -54,6 +55,7 @@ func New(databasePool *sql.DB) Models {
 		ContractArticle:           ContractArticle{},
 		ContractArticleOverage:    ContractArticleOverage{},
 		Log:                       Log{},
+		ErrorLog: ErrorLog{},
 	}
 }
 

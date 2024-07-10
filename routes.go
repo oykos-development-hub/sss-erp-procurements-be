@@ -79,6 +79,11 @@ func routes(app *celeritas.Celeritas, middleware *middleware.Middleware, handler
 		rt.Get("/logs", handlers.LogHandler.GetLogList)
 		rt.Put("/logs/{id}", handlers.LogHandler.UpdateLog)
 		rt.Delete("/logs/{id}", handlers.LogHandler.DeleteLog)
+
+		rt.Get("/error-logs/{id}", handlers.ErrorLogHandler.GetErrorLogById)
+		rt.Get("/error-logs", handlers.ErrorLogHandler.GetErrorLogList)
+		rt.Put("/error-logs/{id}", handlers.ErrorLogHandler.UpdateErrorLog)
+		rt.Delete("/error-logs/{id}", handlers.ErrorLogHandler.DeleteErrorLog)
 	})
 
 	return r

@@ -16,15 +16,17 @@ import (
 
 // ContractHandler is a concrete type that implements ContractHandler
 type contractHandlerImpl struct {
-	App     *celeritas.Celeritas
-	service services.ContractService
+	App             *celeritas.Celeritas
+	service         services.ContractService
+	errorLogService services.ErrorLogService
 }
 
 // NewContractHandler initializes a new ContractHandler with its dependencies
-func NewContractHandler(app *celeritas.Celeritas, contractService services.ContractService) ContractHandler {
+func NewContractHandler(app *celeritas.Celeritas, contractService services.ContractService, errorLogService services.ErrorLogService) ContractHandler {
 	return &contractHandlerImpl{
-		App:     app,
-		service: contractService,
+		App:             app,
+		service:         contractService,
+		errorLogService: errorLogService,
 	}
 }
 
@@ -32,6 +34,7 @@ func (h *contractHandlerImpl) CreateContract(w http.ResponseWriter, r *http.Requ
 	var input dto.ContractDTO
 	err := h.App.ReadJSON(w, r, &input)
 	if err != nil {
+		h.errorLogService.CreateErrorLog(err)
 		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, http.StatusBadRequest, err)
 		return
@@ -49,7 +52,9 @@ func (h *contractHandlerImpl) CreateContract(w http.ResponseWriter, r *http.Requ
 	userID, err := strconv.Atoi(userIDString)
 
 	if err != nil {
+		h.errorLogService.CreateErrorLog(err)
 		h.App.ErrorLog.Print(err)
+		h.errorLogService.CreateErrorLog(err)
 		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(errors.ErrUnauthorized), errors.ErrUnauthorized)
 		return
@@ -60,6 +65,7 @@ func (h *contractHandlerImpl) CreateContract(w http.ResponseWriter, r *http.Requ
 
 	res, err := h.service.CreateContract(ctx, input)
 	if err != nil {
+		h.errorLogService.CreateErrorLog(err)
 		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
@@ -74,6 +80,7 @@ func (h *contractHandlerImpl) UpdateContract(w http.ResponseWriter, r *http.Requ
 	var input dto.ContractDTO
 	err := h.App.ReadJSON(w, r, &input)
 	if err != nil {
+		h.errorLogService.CreateErrorLog(err)
 		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, http.StatusBadRequest, err)
 		return
@@ -91,7 +98,9 @@ func (h *contractHandlerImpl) UpdateContract(w http.ResponseWriter, r *http.Requ
 	userID, err := strconv.Atoi(userIDString)
 
 	if err != nil {
+		h.errorLogService.CreateErrorLog(err)
 		h.App.ErrorLog.Print(err)
+		h.errorLogService.CreateErrorLog(err)
 		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(errors.ErrUnauthorized), errors.ErrUnauthorized)
 		return
@@ -102,6 +111,7 @@ func (h *contractHandlerImpl) UpdateContract(w http.ResponseWriter, r *http.Requ
 
 	res, err := h.service.UpdateContract(ctx, id, input)
 	if err != nil {
+		h.errorLogService.CreateErrorLog(err)
 		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
@@ -118,6 +128,7 @@ func (h *contractHandlerImpl) DeleteContract(w http.ResponseWriter, r *http.Requ
 	userID, err := strconv.Atoi(userIDString)
 
 	if err != nil {
+		h.errorLogService.CreateErrorLog(err)
 		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(errors.ErrUnauthorized), errors.ErrUnauthorized)
 		return
@@ -128,6 +139,7 @@ func (h *contractHandlerImpl) DeleteContract(w http.ResponseWriter, r *http.Requ
 
 	err = h.service.DeleteContract(ctx, id)
 	if err != nil {
+		h.errorLogService.CreateErrorLog(err)
 		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
@@ -141,6 +153,7 @@ func (h *contractHandlerImpl) GetContractById(w http.ResponseWriter, r *http.Req
 
 	res, err := h.service.GetContract(id)
 	if err != nil {
+		h.errorLogService.CreateErrorLog(err)
 		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
@@ -153,6 +166,7 @@ func (h *contractHandlerImpl) GetContractList(w http.ResponseWriter, r *http.Req
 	var input dto.GetContractsInputDTO
 	err := h.App.ReadJSON(w, r, &input)
 	if err != nil {
+		h.errorLogService.CreateErrorLog(err)
 		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, http.StatusBadRequest, err)
 		return
@@ -167,6 +181,7 @@ func (h *contractHandlerImpl) GetContractList(w http.ResponseWriter, r *http.Req
 
 	res, total, err := h.service.GetContractList(input)
 	if err != nil {
+		h.errorLogService.CreateErrorLog(err)
 		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return

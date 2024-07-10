@@ -29,33 +29,35 @@ func initApplication() *celeritas.Celeritas {
 
 	models := data.New(cel.DB.Pool)
 
+	ErrorLogService := services.NewErrorLogServiceImpl(cel, models.ErrorLog)
+	ErrorLogHandler := handlers.NewErrorLogHandler(cel, ErrorLogService)
+
 	PlanService := services.NewPlanServiceImpl(cel, models.Plan)
-	PlanHandler := handlers.NewPlanHandler(cel, PlanService)
+	PlanHandler := handlers.NewPlanHandler(cel, PlanService, ErrorLogService)
 
 	ItemService := services.NewItemServiceImpl(cel, models.Item)
-	ItemHandler := handlers.NewItemHandler(cel, ItemService)
+	ItemHandler := handlers.NewItemHandler(cel, ItemService, ErrorLogService)
 
 	ArticleService := services.NewArticleServiceImpl(cel, models.Article)
-	ArticleHandler := handlers.NewArticleHandler(cel, ArticleService)
+	ArticleHandler := handlers.NewArticleHandler(cel, ArticleService, ErrorLogService)
 
 	ContractService := services.NewContractServiceImpl(cel, models.Contract)
-	ContractHandler := handlers.NewContractHandler(cel, ContractService)
+	ContractHandler := handlers.NewContractHandler(cel, ContractService, ErrorLogService)
 
 	OrganizationUnitArticleService := services.NewOrganizationUnitArticleServiceImpl(cel, models.OrganizationUnitArticle)
-	OrganizationUnitArticleHandler := handlers.NewOrganizationUnitArticleHandler(cel, OrganizationUnitArticleService)
+	OrganizationUnitArticleHandler := handlers.NewOrganizationUnitArticleHandler(cel, OrganizationUnitArticleService, ErrorLogService)
 
 	OrganizationUnitPlanLimitService := services.NewOrganizationUnitPlanLimitServiceImpl(cel, models.OrganizationUnitPlanLimit)
-	OrganizationUnitPlanLimitHandler := handlers.NewOrganizationUnitPlanLimitHandler(cel, OrganizationUnitPlanLimitService)
+	OrganizationUnitPlanLimitHandler := handlers.NewOrganizationUnitPlanLimitHandler(cel, OrganizationUnitPlanLimitService, ErrorLogService)
 
 	ContractArticleService := services.NewContractArticleServiceImpl(cel, models.ContractArticle)
-	ContractArticleHandler := handlers.NewContractArticleHandler(cel, ContractArticleService, ArticleService)
+	ContractArticleHandler := handlers.NewContractArticleHandler(cel, ContractArticleService, ArticleService, ErrorLogService)
 
 	ContractArticleOverageService := services.NewContractArticleOverageServiceImpl(cel, models.ContractArticleOverage)
-	ContractArticleOverageHandler := handlers.NewContractArticleOverageHandler(cel, ContractArticleOverageService)
+	ContractArticleOverageHandler := handlers.NewContractArticleOverageHandler(cel, ContractArticleOverageService, ErrorLogService)
 
-		
 	LogService := services.NewLogServiceImpl(cel, models.Log)
-	LogHandler := handlers.NewLogHandler(cel, LogService)
+	LogHandler := handlers.NewLogHandler(cel, LogService, ErrorLogService)
 
 	myHandlers := &handlers.Handlers{
 		PlanHandler:                      PlanHandler,
@@ -66,7 +68,8 @@ func initApplication() *celeritas.Celeritas {
 		OrganizationUnitPlanLimitHandler: OrganizationUnitPlanLimitHandler,
 		ContractArticleHandler:           ContractArticleHandler,
 		ContractArticleOverageHandler:    ContractArticleOverageHandler,
-		LogHandler: LogHandler,
+		LogHandler:                       LogHandler,
+		ErrorLogHandler:                  ErrorLogHandler,
 	}
 
 	myMiddleware := &middleware.Middleware{

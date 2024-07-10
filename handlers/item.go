@@ -16,15 +16,17 @@ import (
 
 // ItemHandler is a concrete type that implements ItemHandler
 type itemHandlerImpl struct {
-	App     *celeritas.Celeritas
-	service services.ItemService
+	App             *celeritas.Celeritas
+	service         services.ItemService
+	errorLogService services.ErrorLogService
 }
 
 // NewItemHandler initializes a new ItemHandler with its dependencies
-func NewItemHandler(app *celeritas.Celeritas, itemService services.ItemService) ItemHandler {
+func NewItemHandler(app *celeritas.Celeritas, itemService services.ItemService, errorLogService services.ErrorLogService) ItemHandler {
 	return &itemHandlerImpl{
-		App:     app,
-		service: itemService,
+		App:             app,
+		service:         itemService,
+		errorLogService: errorLogService,
 	}
 }
 
@@ -32,6 +34,7 @@ func (h *itemHandlerImpl) CreateItem(w http.ResponseWriter, r *http.Request) {
 	var input dto.ItemDTO
 	err := h.App.ReadJSON(w, r, &input)
 	if err != nil {
+		h.errorLogService.CreateErrorLog(err)
 		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, http.StatusBadRequest, err)
 		return
@@ -49,6 +52,7 @@ func (h *itemHandlerImpl) CreateItem(w http.ResponseWriter, r *http.Request) {
 	userID, err := strconv.Atoi(userIDString)
 
 	if err != nil {
+		h.errorLogService.CreateErrorLog(err)
 		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(errors.ErrUnauthorized), errors.ErrUnauthorized)
 		return
@@ -59,6 +63,7 @@ func (h *itemHandlerImpl) CreateItem(w http.ResponseWriter, r *http.Request) {
 
 	res, err := h.service.CreateItem(ctx, input)
 	if err != nil {
+		h.errorLogService.CreateErrorLog(err)
 		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
@@ -73,6 +78,7 @@ func (h *itemHandlerImpl) UpdateItem(w http.ResponseWriter, r *http.Request) {
 	var input dto.ItemDTO
 	err := h.App.ReadJSON(w, r, &input)
 	if err != nil {
+		h.errorLogService.CreateErrorLog(err)
 		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, http.StatusBadRequest, err)
 		return
@@ -90,6 +96,7 @@ func (h *itemHandlerImpl) UpdateItem(w http.ResponseWriter, r *http.Request) {
 	userID, err := strconv.Atoi(userIDString)
 
 	if err != nil {
+		h.errorLogService.CreateErrorLog(err)
 		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(errors.ErrUnauthorized), errors.ErrUnauthorized)
 		return
@@ -100,6 +107,7 @@ func (h *itemHandlerImpl) UpdateItem(w http.ResponseWriter, r *http.Request) {
 
 	res, err := h.service.UpdateItem(ctx, id, input)
 	if err != nil {
+		h.errorLogService.CreateErrorLog(err)
 		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
@@ -116,6 +124,7 @@ func (h *itemHandlerImpl) DeleteItem(w http.ResponseWriter, r *http.Request) {
 	userID, err := strconv.Atoi(userIDString)
 
 	if err != nil {
+		h.errorLogService.CreateErrorLog(err)
 		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(errors.ErrUnauthorized), errors.ErrUnauthorized)
 		return
@@ -126,6 +135,7 @@ func (h *itemHandlerImpl) DeleteItem(w http.ResponseWriter, r *http.Request) {
 
 	err = h.service.DeleteItem(ctx, id)
 	if err != nil {
+		h.errorLogService.CreateErrorLog(err)
 		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
@@ -139,6 +149,7 @@ func (h *itemHandlerImpl) GetItemById(w http.ResponseWriter, r *http.Request) {
 
 	res, err := h.service.GetItem(id)
 	if err != nil {
+		h.errorLogService.CreateErrorLog(err)
 		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
@@ -151,6 +162,7 @@ func (h *itemHandlerImpl) GetItemList(w http.ResponseWriter, r *http.Request) {
 	var input dto.GetItemsInputDTO
 	err := h.App.ReadJSON(w, r, &input)
 	if err != nil {
+		h.errorLogService.CreateErrorLog(err)
 		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, http.StatusBadRequest, err)
 		return
@@ -165,6 +177,7 @@ func (h *itemHandlerImpl) GetItemList(w http.ResponseWriter, r *http.Request) {
 
 	res, total, err := h.service.GetItemList(input)
 	if err != nil {
+		h.errorLogService.CreateErrorLog(err)
 		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return

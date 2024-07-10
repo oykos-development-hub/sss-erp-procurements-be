@@ -14,15 +14,17 @@ import (
 
 // OrganizationUnitArticleHandler is a concrete type that implements OrganizationUnitArticleHandler
 type organizationunitarticleHandlerImpl struct {
-	App     *celeritas.Celeritas
-	service services.OrganizationUnitArticleService
+	App             *celeritas.Celeritas
+	service         services.OrganizationUnitArticleService
+	errorLogService services.ErrorLogService
 }
 
 // NewOrganizationUnitArticleHandler initializes a new OrganizationUnitArticleHandler with its dependencies
-func NewOrganizationUnitArticleHandler(app *celeritas.Celeritas, organizationunitarticleService services.OrganizationUnitArticleService) OrganizationUnitArticleHandler {
+func NewOrganizationUnitArticleHandler(app *celeritas.Celeritas, organizationunitarticleService services.OrganizationUnitArticleService, errorLogService services.ErrorLogService) OrganizationUnitArticleHandler {
 	return &organizationunitarticleHandlerImpl{
-		App:     app,
-		service: organizationunitarticleService,
+		App:             app,
+		service:         organizationunitarticleService,
+		errorLogService: errorLogService,
 	}
 }
 
@@ -30,6 +32,7 @@ func (h *organizationunitarticleHandlerImpl) CreateOrganizationUnitArticle(w htt
 	var input dto.OrganizationUnitArticleDTO
 	err := h.App.ReadJSON(w, r, &input)
 	if err != nil {
+		h.errorLogService.CreateErrorLog(err)
 		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, http.StatusBadRequest, err)
 		return
@@ -44,6 +47,7 @@ func (h *organizationunitarticleHandlerImpl) CreateOrganizationUnitArticle(w htt
 
 	res, err := h.service.CreateOrganizationUnitArticle(input)
 	if err != nil {
+		h.errorLogService.CreateErrorLog(err)
 		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
@@ -58,6 +62,7 @@ func (h *organizationunitarticleHandlerImpl) UpdateOrganizationUnitArticle(w htt
 	var input dto.OrganizationUnitArticleDTO
 	err := h.App.ReadJSON(w, r, &input)
 	if err != nil {
+		h.errorLogService.CreateErrorLog(err)
 		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, http.StatusBadRequest, err)
 		return
@@ -72,6 +77,7 @@ func (h *organizationunitarticleHandlerImpl) UpdateOrganizationUnitArticle(w htt
 
 	res, err := h.service.UpdateOrganizationUnitArticle(id, input)
 	if err != nil {
+		h.errorLogService.CreateErrorLog(err)
 		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
@@ -85,6 +91,7 @@ func (h *organizationunitarticleHandlerImpl) DeleteOrganizationUnitArticle(w htt
 
 	err := h.service.DeleteOrganizationUnitArticle(id)
 	if err != nil {
+		h.errorLogService.CreateErrorLog(err)
 		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
@@ -98,6 +105,7 @@ func (h *organizationunitarticleHandlerImpl) GetOrganizationUnitArticleById(w ht
 
 	res, err := h.service.GetOrganizationUnitArticle(id)
 	if err != nil {
+		h.errorLogService.CreateErrorLog(err)
 		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
@@ -110,6 +118,7 @@ func (h *organizationunitarticleHandlerImpl) GetOrganizationUnitArticleList(w ht
 	var input dto.GetOrganizationUnitArticleListInputDTO
 	err := h.App.ReadJSON(w, r, &input)
 	if err != nil {
+		h.errorLogService.CreateErrorLog(err)
 		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, http.StatusBadRequest, err)
 		return
@@ -124,6 +133,7 @@ func (h *organizationunitarticleHandlerImpl) GetOrganizationUnitArticleList(w ht
 
 	res, err := h.service.GetOrganizationUnitArticleList(input)
 	if err != nil {
+		h.errorLogService.CreateErrorLog(err)
 		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return

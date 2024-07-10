@@ -14,17 +14,19 @@ import (
 
 // ContractArticleHandler is a concrete type that implements ContractHandler
 type contractArticleHandlerImpl struct {
-	App            *celeritas.Celeritas
-	service        services.ContractArticleService
-	articleService services.ArticleService
+	App             *celeritas.Celeritas
+	service         services.ContractArticleService
+	articleService  services.ArticleService
+	errorLogService services.ErrorLogService
 }
 
 // NewContractArticleHandler initializes a new ContractArticleHandler with its dependencies
-func NewContractArticleHandler(app *celeritas.Celeritas, contractArticleService services.ContractArticleService, articleService services.ArticleService) ContractArticleHandler {
+func NewContractArticleHandler(app *celeritas.Celeritas, contractArticleService services.ContractArticleService, articleService services.ArticleService, errorLogService services.ErrorLogService) ContractArticleHandler {
 	return &contractArticleHandlerImpl{
-		App:            app,
-		service:        contractArticleService,
-		articleService: articleService,
+		App:             app,
+		service:         contractArticleService,
+		articleService:  articleService,
+		errorLogService: errorLogService,
 	}
 }
 
@@ -32,6 +34,7 @@ func (h *contractArticleHandlerImpl) CreateContractArticle(w http.ResponseWriter
 	var input dto.ContractArticleDTO
 	err := h.App.ReadJSON(w, r, &input)
 	if err != nil {
+		h.errorLogService.CreateErrorLog(err)
 		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, http.StatusBadRequest, err)
 		return
@@ -46,6 +49,7 @@ func (h *contractArticleHandlerImpl) CreateContractArticle(w http.ResponseWriter
 
 	res, err := h.service.CreateContractArticle(input)
 	if err != nil {
+		h.errorLogService.CreateErrorLog(err)
 		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
@@ -60,6 +64,7 @@ func (h *contractArticleHandlerImpl) UpdateContractArticle(w http.ResponseWriter
 	var input dto.ContractArticleDTO
 	err := h.App.ReadJSON(w, r, &input)
 	if err != nil {
+		h.errorLogService.CreateErrorLog(err)
 		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, http.StatusBadRequest, err)
 		return
@@ -74,6 +79,7 @@ func (h *contractArticleHandlerImpl) UpdateContractArticle(w http.ResponseWriter
 
 	res, err := h.service.UpdateContractArticle(id, input)
 	if err != nil {
+		h.errorLogService.CreateErrorLog(err)
 		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
@@ -87,6 +93,7 @@ func (h *contractArticleHandlerImpl) DeleteContractArticle(w http.ResponseWriter
 
 	err := h.service.DeleteContractArticle(id)
 	if err != nil {
+		h.errorLogService.CreateErrorLog(err)
 		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
@@ -100,6 +107,7 @@ func (h *contractArticleHandlerImpl) GetContractArticleById(w http.ResponseWrite
 
 	res, err := h.service.GetContractArticle(id)
 	if err != nil {
+		h.errorLogService.CreateErrorLog(err)
 		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
@@ -112,6 +120,7 @@ func (h *contractArticleHandlerImpl) GetContractArticleList(w http.ResponseWrite
 	var input dto.GetContractArticlesInputDTO
 	err := h.App.ReadJSON(w, r, &input)
 	if err != nil {
+		h.errorLogService.CreateErrorLog(err)
 		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, http.StatusBadRequest, err)
 		return
@@ -126,6 +135,7 @@ func (h *contractArticleHandlerImpl) GetContractArticleList(w http.ResponseWrite
 
 	res, total, err := h.service.GetContractArticleList(&input)
 	if err != nil {
+		h.errorLogService.CreateErrorLog(err)
 		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return

@@ -14,15 +14,17 @@ import (
 
 // OrganizationUnitPlanLimitHandler is a concrete type that implements OrganizationUnitPlanLimitHandler
 type organizationunitplanlimitHandlerImpl struct {
-	App     *celeritas.Celeritas
-	service services.OrganizationUnitPlanLimitService
+	App             *celeritas.Celeritas
+	service         services.OrganizationUnitPlanLimitService
+	errorLogService services.ErrorLogService
 }
 
 // NewOrganizationUnitPlanLimitHandler initializes a new OrganizationUnitPlanLimitHandler with its dependencies
-func NewOrganizationUnitPlanLimitHandler(app *celeritas.Celeritas, organizationunitplanlimitService services.OrganizationUnitPlanLimitService) OrganizationUnitPlanLimitHandler {
+func NewOrganizationUnitPlanLimitHandler(app *celeritas.Celeritas, organizationunitplanlimitService services.OrganizationUnitPlanLimitService, errorLogService services.ErrorLogService) OrganizationUnitPlanLimitHandler {
 	return &organizationunitplanlimitHandlerImpl{
-		App:     app,
-		service: organizationunitplanlimitService,
+		App:             app,
+		service:         organizationunitplanlimitService,
+		errorLogService: errorLogService,
 	}
 }
 
@@ -30,6 +32,7 @@ func (h *organizationunitplanlimitHandlerImpl) CreateOrganizationUnitPlanLimit(w
 	var input dto.OrganizationUnitPlanLimitDTO
 	err := h.App.ReadJSON(w, r, &input)
 	if err != nil {
+		h.errorLogService.CreateErrorLog(err)
 		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, http.StatusBadRequest, err)
 		return
@@ -44,6 +47,7 @@ func (h *organizationunitplanlimitHandlerImpl) CreateOrganizationUnitPlanLimit(w
 
 	res, err := h.service.CreateOrganizationUnitPlanLimit(input)
 	if err != nil {
+		h.errorLogService.CreateErrorLog(err)
 		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
@@ -58,6 +62,7 @@ func (h *organizationunitplanlimitHandlerImpl) UpdateOrganizationUnitPlanLimit(w
 	var input dto.OrganizationUnitPlanLimitDTO
 	err := h.App.ReadJSON(w, r, &input)
 	if err != nil {
+		h.errorLogService.CreateErrorLog(err)
 		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, http.StatusBadRequest, err)
 		return
@@ -72,6 +77,7 @@ func (h *organizationunitplanlimitHandlerImpl) UpdateOrganizationUnitPlanLimit(w
 
 	res, err := h.service.UpdateOrganizationUnitPlanLimit(id, input)
 	if err != nil {
+		h.errorLogService.CreateErrorLog(err)
 		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
@@ -85,6 +91,7 @@ func (h *organizationunitplanlimitHandlerImpl) DeleteOrganizationUnitPlanLimit(w
 
 	err := h.service.DeleteOrganizationUnitPlanLimit(id)
 	if err != nil {
+		h.errorLogService.CreateErrorLog(err)
 		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
@@ -98,6 +105,7 @@ func (h *organizationunitplanlimitHandlerImpl) GetOrganizationUnitPlanLimitById(
 
 	res, err := h.service.GetOrganizationUnitPlanLimit(id)
 	if err != nil {
+		h.errorLogService.CreateErrorLog(err)
 		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
@@ -110,6 +118,7 @@ func (h *organizationunitplanlimitHandlerImpl) GetOrganizationUnitPlanLimitList(
 	var input dto.OrganizationUnitPlanLimitInputDTO
 	err := h.App.ReadJSON(w, r, &input)
 	if err != nil {
+		h.errorLogService.CreateErrorLog(err)
 		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, http.StatusBadRequest, err)
 		return
@@ -117,6 +126,7 @@ func (h *organizationunitplanlimitHandlerImpl) GetOrganizationUnitPlanLimitList(
 
 	res, err := h.service.GetOrganizationUnitPlanLimitList(input)
 	if err != nil {
+		h.errorLogService.CreateErrorLog(err)
 		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return

@@ -14,15 +14,17 @@ import (
 
 // ContractArticleOverageHandler is a concrete type that implements ContractArticleOverageHandler
 type contractarticleoverageHandlerImpl struct {
-	App     *celeritas.Celeritas
-	service services.ContractArticleOverageService
+	App             *celeritas.Celeritas
+	service         services.ContractArticleOverageService
+	errorLogService services.ErrorLogService
 }
 
 // NewContractArticleOverageHandler initializes a new ContractArticleOverageHandler with its dependencies
-func NewContractArticleOverageHandler(app *celeritas.Celeritas, contractarticleoverageService services.ContractArticleOverageService) ContractArticleOverageHandler {
+func NewContractArticleOverageHandler(app *celeritas.Celeritas, contractarticleoverageService services.ContractArticleOverageService, errorLogService services.ErrorLogService) ContractArticleOverageHandler {
 	return &contractarticleoverageHandlerImpl{
-		App:     app,
-		service: contractarticleoverageService,
+		App:             app,
+		service:         contractarticleoverageService,
+		errorLogService: errorLogService,
 	}
 }
 
@@ -30,6 +32,7 @@ func (h *contractarticleoverageHandlerImpl) CreateContractArticleOverage(w http.
 	var input dto.ContractArticleOverageDTO
 	err := h.App.ReadJSON(w, r, &input)
 	if err != nil {
+		h.errorLogService.CreateErrorLog(err)
 		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, http.StatusBadRequest, err)
 		return
@@ -44,6 +47,7 @@ func (h *contractarticleoverageHandlerImpl) CreateContractArticleOverage(w http.
 
 	res, err := h.service.CreateContractArticleOverage(input)
 	if err != nil {
+		h.errorLogService.CreateErrorLog(err)
 		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
@@ -58,6 +62,7 @@ func (h *contractarticleoverageHandlerImpl) UpdateContractArticleOverage(w http.
 	var input dto.ContractArticleOverageDTO
 	err := h.App.ReadJSON(w, r, &input)
 	if err != nil {
+		h.errorLogService.CreateErrorLog(err)
 		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, http.StatusBadRequest, err)
 		return
@@ -72,6 +77,7 @@ func (h *contractarticleoverageHandlerImpl) UpdateContractArticleOverage(w http.
 
 	res, err := h.service.UpdateContractArticleOverage(id, input)
 	if err != nil {
+		h.errorLogService.CreateErrorLog(err)
 		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
@@ -85,6 +91,7 @@ func (h *contractarticleoverageHandlerImpl) DeleteContractArticleOverage(w http.
 
 	err := h.service.DeleteContractArticleOverage(id)
 	if err != nil {
+		h.errorLogService.CreateErrorLog(err)
 		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
@@ -98,6 +105,7 @@ func (h *contractarticleoverageHandlerImpl) GetContractArticleOverageById(w http
 
 	res, err := h.service.GetContractArticleOverage(id)
 	if err != nil {
+		h.errorLogService.CreateErrorLog(err)
 		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
@@ -110,6 +118,7 @@ func (h *contractarticleoverageHandlerImpl) GetContractArticleOverageList(w http
 	var input dto.GetContractArticleOverageInputDTO
 	err := h.App.ReadJSON(w, r, &input)
 	if err != nil {
+		h.errorLogService.CreateErrorLog(err)
 		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, http.StatusBadRequest, err)
 		return
@@ -124,6 +133,7 @@ func (h *contractarticleoverageHandlerImpl) GetContractArticleOverageList(w http
 
 	res, err := h.service.GetContractArticleOverageList(input)
 	if err != nil {
+		h.errorLogService.CreateErrorLog(err)
 		h.App.ErrorLog.Print(err)
 		_ = h.App.WriteErrorResponse(w, errors.MapErrorToStatusCode(err), err)
 		return
