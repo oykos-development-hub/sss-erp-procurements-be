@@ -9,7 +9,7 @@ import (
 type OrganizationUnitPlanLimitDTO struct {
 	ItemID             int `json:"public_procurement_id" validate:"required"`
 	OrganizationUnitID int `json:"organization_unit_id" validate:"required"`
-	Limit              int `json:"limit" validate:"required"`
+	Limit              int `json:"limit"`
 }
 
 type OrganizationUnitPlanLimitInputDTO struct {
